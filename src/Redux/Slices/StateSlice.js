@@ -29,7 +29,13 @@ const stateSlice=createSlice({
     name:'state',
     initialState,
     reducers:{},
-    extraReducers:()=>{}
+    extraReducers:(builder)=>{
+        builder.addCase(getStatesData.fulfilled,(state,action)=>{
+            console.log('check',action);
+            state.allUserCount=action?.payload?.allUsersCount
+            state.subscribedCount=action?.payload?.subscribedUsersCount
+        })
+    }
 })
 
 export default stateSlice.reducer
