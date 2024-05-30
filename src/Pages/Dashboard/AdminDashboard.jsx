@@ -165,7 +165,7 @@ function AdminDashboard(){
                             onClick={()=>{
                                 navigate('/course/create')
                             }}
-                            className="w-fit bg-yellow-500 hover:bg-yellow-600 transition-all ease-in-out duration-300 rounded py-2 px-4 fontt-semibold text-lg cursor-pointer"
+                            className="w-fit bg-yellow-500 hover:bg-yellow-600 transition-all ease-in-out duration-300 rounded py-2 px-4 text-black font-semibold text-lg cursor-pointer"
                         >   
                             Create New course
 
@@ -216,14 +216,14 @@ function AdminDashboard(){
                                             <td>
                                                 {course?.numberOfLecture}
                                             </td>
-                                            <td className="max-w-28 overflow-hidden text-ellipsis whitespace-nowrap">
-                                                <textarea value={course?.description} readOnly className="w-80 h-auto bg-transparent resize-none"></textarea>
+                                            <td className="max-w-28 overflow-hidden text-ellipsis whitespace-nowrap ">
+                                                <textarea value={course?.description} readOnly className="w-60 h-auto bg-transparent resize-x-none"></textarea>
                                             </td>
                                             <td className="flex items-center gap-4 ">
-                                                <button onClick={()=>navigate('/course/displaylecture',{state:{...course}})} className="bg-green-500 text-xl py-2 px-4 rounded-md font-bold hover:bg-green-600 transition-all ease-in-out duration-300">
+                                                <button onClick={()=>navigate('/course/displaylecture',{state:{...course}})} className="bg-green-700 text-xl py-2 px-4 rounded-md font-bold hover:bg-green-900 transition-all ease-in-out duration-300">
                                                     <BsCollectionPlayFill/>
                                                 </button>
-                                                <button onClick={()=>onCourseDelete(course?._id)} className="bg-red-500 text-xl py-2 px-4 rounded-md font-bold hover:bg-red-600 transition-all ease-in-out duration-300">
+                                                <button onClick={()=>onCourseDelete(course?._id)} className="bg-red-700 text-xl py-2 px-4 rounded-md font-bold hover:bg-red-900 transition-all ease-in-out duration-300">
                                                     <BsTrash/>
                                                 </button>
                                             </td>

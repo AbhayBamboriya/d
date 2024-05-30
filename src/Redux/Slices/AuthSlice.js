@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import  axiosInstance  from "../../Helpers/axiosInstance";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import changePasswordInstance from "../../Helpers/changePasswordInstance";
 // import { build } from "vite";    
 // authSlice is for authenticatino purpose
 //jadiya
@@ -42,11 +45,43 @@ export const createAccount=createAsyncThunk('/auth/signup',async(data) =>{
     }
 })
 
-
+export const found=createAsyncThunk('/found',async(data)=>{
+    try{
+        console.log('dataaa',data);
+        console.log('reached here');
+        const res=axiosInstance.post('/user/check',data)
+        
+        toast.promise(res,
+            {
+                loading:'Wait! Authentication in Progress ',
+                success:(res)=>{
+                    return res?.data?.message
+                },
+                error:'Enter a registered User Id'
+            }
+        )
+        return (await (res)).data
+        // console.log('cheeckkkk');
+    }
+    catch(e){
+        toast.error(e?.response?.data?.message)
+    }
+})
+export const forgot=createAsyncThunk('/forgot',async(data)=>{
+    try{
+        const res=axiosInstance.post('/user/reset',data)
+        console.log('response forgot',await (res));
+        return await res
+    }
+    catch(e){
+        toast.error(e?.response?.data?.message)   
+    }
+})
 export const login=createAsyncThunk('/auth/login',async(data) =>{
     try{
+        console.log('login data',data);
         const res=axiosInstance.post("/user/login",data)
-        console.log('res'+res);
+        // console.log('res'+(await res).data);
         toast.promise(res
             // ,console.log('ressss'+res).toString()
             ,{
@@ -121,6 +156,37 @@ export const getUserData = createAsyncThunk("/user/details",async ()=>{
     }
 })
 
+export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
+    try{
+        console.log('reached1');
+        console.log(data);
+
+        console.log('abhay');
+        // const res=axiosInstance.changeUrl.post(`/${url}`,data)
+        // const res=changePasswordInstance.post(`/${url}`,data)
+        console.log('resetPasswordData',data);
+        console.log('passwordSend',data.passwordW);
+        // l=data.passwordW
+        console.log('sending data',`/user/password/${data.url}`,data);
+        const res=axiosInstance.post(`/user/password/${data.url}`,data)
+
+        console.log('reached');
+        toast.promise(res,{
+            loading:"Wait! Reset Password in Progress ",
+            
+            success:(data)=>{
+                console.log('data from slics',data);
+                return data?.data?.message
+            },
+            error:"Failed to Reset Password"
+        });
+        return (await res).data
+    }
+    catch(e){
+        // console.log('error');
+        toast.error(e)
+    }
+})
 const authSlice=createSlice({
     name:'auth',
     initialState,
@@ -155,6 +221,13 @@ const authSlice=createSlice({
             state.isLoggedIn=true
             state.data=action?.payload?.user
             state.role=action?.payload?.user?.role
+        })
+
+        .addCase(forgot.fulfilled,(state,action)=>{
+            console.log('store res',action);
+            if(!action?.payload?.data?.resetToken)    return
+            localStorage.setItem("resetToken",action?.payload?.data?.resetToken)
+            state.resetPasswordUrl=action?.payload?.data?.resetToken
         })
     }
 })

@@ -14,6 +14,7 @@ function Login(){
 
     function handleUserInput(e){
         const {name,value}=e.target;
+        // console.log('value',...loginData);
         setLoginData({
             ...loginData,
             [name]:value
@@ -82,7 +83,8 @@ function Login(){
                     <button type="submit" className="bg-yellow-500 mt-2 hover:bg-yellow-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer">
                         Login
                     </button>
-                    <p className="text-center">Donot have an Account ? <Link to='/signup' className="link text-accent cursor-pointer">Signup</Link></p>
+                    <p className="text-center"> Forgot Password ?  <Link to='/forgot' className="link text-accent cursor-pointer">Click Here</Link></p>
+                    <p className="text-center">Do not have an Account ? <Link to='/signup' className="link text-accent cursor-pointer">Signup</Link></p>
                 </form>
 
             </div>

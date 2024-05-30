@@ -17,6 +17,8 @@ import EditProfile from './Pages/User/EdiitProfile'
 import DisplayLecture from './Pages/Dashboard/DisplayLecutre'
 import Addlecture from './Pages/Dashboard/AddLecture'
 import AdminDashboard from './Pages/Dashboard/AdminDashboard'
+import ForgotPassword from './Pages/ForgotPassword'
+import ResetPassword from './Pages/ResetPassword'
 // import morgan from 'morgan'
 
 function App() {
@@ -33,7 +35,8 @@ function App() {
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/contact' element={<Contact/>}></Route>
           <Route path='/denied' element={<Denied/>}></Route>
-
+          <Route path='/forgot'  element={<ForgotPassword/>}/>
+          <Route path='/resetPassword' element={<ResetPassword/>}/>
           <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
                 <Route path='/course/create' element={<CreateCourse/>}></Route>
                 <Route path='/course/addlecture' element={<Addlecture/>}></Route>
@@ -41,6 +44,7 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={["ADMIN","USER"]} />}>
                 <Route path='/user/profile' element={<Profile/>}/>
+                
                 <Route path='/user/editprofile' element={<EditProfile/>}/>
                 <Route path='/course/displaylecture' element={<DisplayLecture/>}/>
 
