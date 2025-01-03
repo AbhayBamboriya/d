@@ -8,12 +8,14 @@ import { AiOutlineArrowLeft } from 'react-icons/ai';
 function CourseList(){
     const dispatch =useDispatch();
     const {courseData} = useSelector((state)=>state.course)
+    console.log('first coresedata',courseData);
     const navigate=useNavigate()
     const {role , data} = useSelector((state) => state.auth)
     const {state} = useLocation()
     async function loadCourses(){
         await  dispatch(getAllCourses())
     }
+    
     useEffect (()=>{
         loadCourses()
     },[])
@@ -31,6 +33,7 @@ function CourseList(){
                             return <CourseCard key={element._id} data={element}/>
                         })}
                     </div>}
+                    {console.log('courses',courseData)}
                     {courseData.length==0 &&
                     <div className='grid gap-14 relative h-[m] justify-center items-center'>
                         {/* <Link className='absollute top-8 text-4xl link text-accent cursor-pointer'>

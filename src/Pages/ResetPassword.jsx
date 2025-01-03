@@ -7,9 +7,8 @@ import { resetPassword } from "../Redux/Slices/AuthSlice";
 
 function ResetPassword(){
     // console.log('ResetPaasword page',url);
-    const navigate=useNavigate()
-    const dispatch=useDispatch()
-    let type=true
+    
+    const t=4
     const state=useLocation()
     const url= useSelector((state)=>state?.auth?.resetPasswordUrl)
     const [passwordw ,setPassword]=useState({
@@ -17,6 +16,31 @@ function ResetPassword(){
         // confirmPassword:"",
         url:url
     })
+    
+   
+    const navigate=useNavigate()
+    const dispatch=useDispatch()
+    useEffect(()=>{
+        // console.log('hhh',useSelector((state)=>state?.auth?.resetPasswordUrl));
+        if(!url){
+            console.log('state',state);
+            console.log('coming');
+            navigate('/')
+        }
+    })
+    // useEffect(()=>{
+    //     (
+    //         async()=>{
+               
+    //         }
+    //     )()
+    // },[])
+    // console.log('urlx',url);
+    // if(url==undefined){
+    //    console.log('d');
+    //        navigate('/')
+    // }
+    
 
     function handleUserInput(e){
         const {name,value}=e.target;
@@ -31,7 +55,7 @@ function ResetPassword(){
     }
 
 
-    let resetPasswordUrl ;
+    // let resetPasswordUrl ;
 
     async function onReset(e){
         e.preventDefault()
@@ -53,19 +77,7 @@ function ResetPassword(){
 
     }
 
-    // useEffect(()=>{
-    //     (
-    //         async()=>{
-    //             if(!state?.auth?.resetPasswordUrl){
-    //                 console.log('coming');
-    //                 navigate('/')
-    //             }
-    //             else{
-    //                 resetPasswordUrl= useSelector((state)=>state?.auth?.resetPasswordUrl)
-    //             }
-    //         }
-    //     )()
-    // },[])
+    
     return(
         <HomeLayout>
              <div className="flex items-center justify-center h-[100vh]"> 
@@ -73,9 +85,9 @@ function ResetPassword(){
                     <h1 className="text-center text-2xl font-bold">
                         Reset Your Password
                     </h1>
-                   
-                    
-                   
+
+
+
                     <div className="flex flex-col gap-1">
                         <label htmlFor="email" className="font-semibold">Password</label>
                         <input type="password"
@@ -87,7 +99,7 @@ function ResetPassword(){
                             onChange={handleUserInput}
                             value={passwordw.password}
                             />
-                        
+
                     </div>
                     {/* <div className="flex flex-col gap-1">
                         <label htmlFor="password" className="font-semibold">Confirm Password</label>
@@ -105,7 +117,7 @@ function ResetPassword(){
                     <button type="submit" className="bg-yellow-500 mt-2 hover:bg-yellow-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer">
                         Submit
                     </button>
-                    
+
                 </form>
 
             </div>

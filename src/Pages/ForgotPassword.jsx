@@ -22,7 +22,13 @@ function ForgotPassword(){
         })
     }
 
-    
+    async function makeRequest() {
+        console.log('before');
+  
+        await delay(1000);
+  
+        console.log('after');
+      }
     async function onForgot(e){
         e.preventDefault();
         // console.log('mail',mail);
@@ -45,10 +51,14 @@ function ForgotPassword(){
         if(res?.payload?.success){
             const token=await dispatch(forgot(mail))
             // console.log(token?.payload?.data?.resetPasswordUrl,'resToken');
+            console.log('tokenin',token);
+            console.log(token?.payload?.data?.resetToken);
+            makeRequest()
             if(token?.payload?.data?.resetToken){
                 // <ResetPassword url='token?.payload?.data?.resetPasswordUrl'/>
                 // <Link to></Link>
-                // console.log('yes');
+                
+                
                 navigate('/resetPassword')
 
             }
@@ -65,9 +75,9 @@ function ForgotPassword(){
                     <h1 className="text-center text-2xl font-bold">
                         Forgot Password
                     </h1>
-                   
-                    
-                   
+
+
+
                     <div className="flex flex-col gap-1">
                         <label htmlFor="email" className="font-semibold">Email</label>
                         <input type="email"
@@ -81,7 +91,7 @@ function ForgotPassword(){
                             className="bg-transparent px-2 py-1 border"
                             />
                     </div>
-                    
+
                     {/* pe-sumbmit page will get refresh */}
                     <button type="submit" className="bg-yellow-500 mt-2 hover:bg-yellow-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer">
                         Submit

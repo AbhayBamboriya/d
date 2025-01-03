@@ -5,6 +5,7 @@ import axiosInstance from "../../Helpers/axiosInstance"
 const initialState={
     key:'',
     subscription_id:'',
+    // check:'',
     isPaymentVerified:false,
     allPayment:{},
     finalMonths:{},
@@ -35,6 +36,8 @@ export const purchaseCourseBundle = createAsyncThunk('/purchaseCourse',async()=>
 
 export const verifyUserPayment = createAsyncThunk('/payment/verify',async(data)=>{
     try{
+        console.log('data from frontend',data);
+        
         const res=await axiosInstance.post('/payments/verify',{
             razorpay_payment_id:data.razorpay_payment_id,
             razorpay_subscription_id:data.razorpay_subscription_id,
@@ -65,7 +68,7 @@ export const getPaymentRecord = createAsyncThunk('/payment/record',async()=>{
 }) 
 
 
-export const cancelSubscription = createAsyncThunk('/payment/cancel',async()=>{
+export const cancelCourseBundle = createAsyncThunk('/payment/cancel',async()=>{
     try{
         const res= axiosInstance.post('/payments/unsubscribe')
         toast.promise(res,{

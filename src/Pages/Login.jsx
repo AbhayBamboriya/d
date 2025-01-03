@@ -1,12 +1,14 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import HomeLayout from "../Layout/HomeLayout"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import toast from "react-hot-toast"
 import { login } from "../Redux/Slices/AuthSlice"
+
 function Login(){
     const dispatch =useDispatch();
     const navigate=useNavigate();
+    const state=useLocation()
     const [loginData,setLoginData]=useState({
         email:"",
         password:"",
@@ -42,9 +44,17 @@ function Login(){
             password:"",
         })
 
-
-
     }
+    // useEffect(()=>{
+    //     (
+    //         async()=>{
+    //             if(state?.auth?.resetPasswordUrl){
+    //                 console.log('coming');
+    //                 navigate('/resetPassword')
+    //             }
+    //         }
+    //     )()
+    // },[])
     return (
         <HomeLayout>
             <div className="flex items-center justify-center h-[100vh]"> 

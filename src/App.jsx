@@ -19,6 +19,9 @@ import Addlecture from './Pages/Dashboard/AddLecture'
 import AdminDashboard from './Pages/Dashboard/AdminDashboard'
 import ForgotPassword from './Pages/ForgotPassword'
 import ResetPassword from './Pages/ResetPassword'
+import Checkout from './Pages/Payment/Checkout'
+import CheckoutSuccess from './Pages/Payment/CheckoutSuccess'
+import CheckoutFailure from './Pages/Payment/CheckoutFail'
 // import morgan from 'morgan'
 
 function App() {
@@ -36,14 +39,20 @@ function App() {
           <Route path='/contact' element={<Contact/>}></Route>
           <Route path='/denied' element={<Denied/>}></Route>
           <Route path='/forgot'  element={<ForgotPassword/>}/>
+          {/* <Route path='/checkout/success' element={<CheckoutSuccess/>}/> */}
+          {/* <Route path='/checkout/fail' element={<CheckoutFailure/>}/> */}
           <Route path='/resetPassword' element={<ResetPassword/>}/>
           <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
                 <Route path='/course/create' element={<CreateCourse/>}></Route>
                 <Route path='/course/addlecture' element={<Addlecture/>}></Route>
                 <Route path='/admin/dashboard' element={<AdminDashboard/>}></Route>
           </Route>
+          {/* <Route path='/course/displaylecture' element={<DisplayLecture/>}/> */}
           <Route element={<RequireAuth allowedRoles={["ADMIN","USER"]} />}>
                 <Route path='/user/profile' element={<Profile/>}/>
+                <Route path='/checkout' element={<Checkout/>}/>
+                <Route path='/checkout/success' element={<CheckoutSuccess/>}/>
+                <Route path='/checkout/fail' element={<CheckoutFailure/>}/>
                 
                 <Route path='/user/editprofile' element={<EditProfile/>}/>
                 <Route path='/course/displaylecture' element={<DisplayLecture/>}/>

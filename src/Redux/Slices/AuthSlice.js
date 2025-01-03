@@ -4,17 +4,15 @@ import  axiosInstance  from "../../Helpers/axiosInstance";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import changePasswordInstance from "../../Helpers/changePasswordInstance";
+import { act } from "react";
 // import { build } from "vite";    
 // authSlice is for authenticatino purpose
 //jadiya
 
 // initial state of auth slice
 const initialState={
-    isLoggedIn:localStorage.getItem('isLoggedIn')   || false,
-    role:localStorage.getItem('role') || "",
-    // json .parse is used because when we do refresh then data will be in string format in redux dev tools
-    // data:localStorage.getItem('data') !== undefined ? JSON.parse(localStorage.getItem('data')) :  []
-    // data:JSON.parse(localStorage.getItem('data')) 
+    isLoggedIn:'',
+    role:localStorage.getItem('role') || ""
 }  
 // thunk is used to provide the delay
 // string is passed in createAsyncThunk to uniquely identify
@@ -199,6 +197,7 @@ const authSlice=createSlice({
             // we have stored in local storage because
             // statte will be fetched from local storage
             // current state will not be accessed from the local storage thatswhy we have saved in the state
+            console.log('action',action);
             localStorage.setItem("data",JSON.stringify(action?.payload?.user))
             localStorage.setItem("isLoggedIn",true)
             localStorage.setItem("role",action?.payload?.user?.role)
