@@ -25,7 +25,7 @@ import CheckoutFailure from './Pages/Payment/CheckoutFail'
 // import morgan from 'morgan'
 
 function App() {
-  const [count, setCount] = useState(0)
+//   const [count, setCount] = useState(0)
 
   return (
    <>
