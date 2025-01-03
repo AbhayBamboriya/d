@@ -1,5 +1,6 @@
 import axios from "axios";
-const   BASE_URL='http://localhost:4052/api/v1'
+// const   BASE_URL='http://localhost:4052/api/v1'
+const BASE_URL='https://lms-server-2-za4g.onrender.com'
 // const changePasswordUrl='localhost:4051/api/v1/user/password'
 const axiosInstance=axios.create();
 // axiosInstance.defaults.changeUrl=changePasswordUrl
