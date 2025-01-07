@@ -10,6 +10,7 @@ import { FcSalesPerformance } from 'react-icons/fc'
 import {FaUsers } from 'react-icons/fa'
 import { GiMoneyStack } from 'react-icons/gi'
 import { BsCollection, BsCollectionPlayFill, BsTrash } from "react-icons/bs"
+import { getPaymentRecord } from "../../Redux/Slices/RazorpaySlice"
 // first of list all the component used here in register
 ChartJs.register(ArcElement,BarElement,Tooltip,Legend,CategoryScale,LinearScale,Title)
 
