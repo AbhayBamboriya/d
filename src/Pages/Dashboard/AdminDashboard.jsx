@@ -18,7 +18,7 @@ function AdminDashboard(){
     const navigate=useNavigate()
 
     const {allUserCount,subscribedCount} = useSelector((state)=>state.stat)
-    // const {allPayment,finalMonths,monthlySalesRecord}=useSelector((state)=>state.razorpay)
+    const {allPayment,finalMonths,monthlySalesRecord}=useSelector((state)=>state.razorpay)
 
 
     const userData={
@@ -76,7 +76,7 @@ function AdminDashboard(){
             async()=>{
                 await dispatch(getAllCourses())
                 await dispatch(getStatesData())
-                // await dispatch(getPaymentRecord())
+                await dispatch(getPaymentRecord())
             }
         )()
     },[])

@@ -14,6 +14,8 @@ export const getStatesData=createAsyncThunk('/stats/get',async()=>{
         toast.promise(response,{
             loading:"Getting the states",
             success:(data)=>{
+                console.log('data is',data?.data?.message);
+                
                 return data?.data?.message
 
             },
