@@ -11,7 +11,9 @@ const initialState = {
 
 export const getAllCoursesLectures = createAsyncThunk("/courses/lecture/get", async (cid) => {
     try{
-        const res=axiosInstance.get(`/course/${cid}`)
+        const res=axiosInstance.get(`/course/${cid}`,{
+            withCredentials: true, // Include cookies in the request
+        })
         toast.promise(res,{
             loading:'Fetching Course lectures',
             success:'Lecture Fetched Successfully',
@@ -34,7 +36,9 @@ export const addCourseLecture = createAsyncThunk("/courses/lecture/added", async
         formData.append("title",data.title)
         formData.append("description",data.description)
         
-        const res=axiosInstance.post(`/course/${data.id}`,formData)
+        const res=axiosInstance.post(`/course/${data.id}`,{
+            withCredentials: true, // Include cookies in the request
+        },formData)
         console.log('resssssssss',res);
         toast.promise(res,{
             loading:'Adding Course lectures',
@@ -50,7 +54,9 @@ export const addCourseLecture = createAsyncThunk("/courses/lecture/added", async
 
 export const deleteCourseLecutre = createAsyncThunk("/courses/lecture/delete", async (data) => {
     try{
-        const response=axiosInstance.delete(`/course?courseId=${data.courseId}&lectureId=${data.lectureId}`)
+        const response=axiosInstance.delete(`/course?courseId=${data.courseId}&lectureId=${data.lectureId}`,{
+            withCredentials: true, // Include cookies in the request
+        })
         toast.promise(response,{
             loading:'Deleting Course lectures',
             success:'Lecture deleted Successfully',

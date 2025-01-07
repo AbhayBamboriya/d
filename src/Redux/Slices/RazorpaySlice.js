@@ -15,7 +15,9 @@ const initialState={
 
 export const getRazorPayId = createAsyncThunk('/razorpay/getId',async()=>{
     try{
-        const res=await axiosInstance.get('/payments/razorpay-key')
+        const res=await axiosInstance.get('/payments/razorpay-key',{
+            withCredentials: true, // Include cookies in the request
+        })
         return res.data
     }
     catch(e){
@@ -25,7 +27,9 @@ export const getRazorPayId = createAsyncThunk('/razorpay/getId',async()=>{
 
 export const purchaseCourseBundle = createAsyncThunk('/purchaseCourse',async()=>{
     try{
-        const res=await axiosInstance.post('/payments/subscribe')
+        const res=await axiosInstance.post('/payments/subscribe',{
+            withCredentials: true, // Include cookies in the request
+        })
         return res.data
     }
     catch(e){
@@ -42,6 +46,8 @@ export const verifyUserPayment = createAsyncThunk('/payment/verify',async(data)=
             razorpay_payment_id:data.razorpay_payment_id,
             razorpay_subscription_id:data.razorpay_subscription_id,
             razorpay_signature:data.razorpay_signature
+        },{
+            withCredentials: true, // Include cookies in the request
         })
         return res.data
     }
@@ -52,7 +58,9 @@ export const verifyUserPayment = createAsyncThunk('/payment/verify',async(data)=
 
 export const getPaymentRecord = createAsyncThunk('/payment/record',async()=>{
     try{
-        const res= axiosInstance.get('/payments?count=100')
+        const res= axiosInstance.get('/payments?count=100',{
+            withCredentials: true, // Include cookies in the request
+        })
         toast.promise(res,{
             loading:'Getting the payment Record',
             success:(data)=>{
@@ -70,7 +78,9 @@ export const getPaymentRecord = createAsyncThunk('/payment/record',async()=>{
 
 export const cancelCourseBundle = createAsyncThunk('/payment/cancel',async()=>{
     try{
-        const res= axiosInstance.post('/payments/unsubscribe')
+        const res= axiosInstance.post('/payments/unsubscribe',{
+            withCredentials: true, // Include cookies in the request
+        })
         toast.promise(res,{
             loading:'Unsubscribing the Course',
             success:(data)=>{

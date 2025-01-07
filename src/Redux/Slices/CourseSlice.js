@@ -23,7 +23,9 @@ export const getAllCourses = createAsyncThunk("/course/get",async()=>{
 
 export const deleteCourseById=createAsyncThunk('/course/delete',async(data)=>{
     try{
-        const response=axiosInstance.delete(`/course/${data}`)
+        const response=axiosInstance.delete(`/course/${data}`,{
+            withCredentials: true, // Include cookies in the request
+        })
         console.log("vbfck"+response);
         toast.promise(response,{
             // alert:'vddio',
@@ -66,7 +68,9 @@ export const createNewCourse = createAsyncThunk('/course/create',async (data) =>
         formData.append('createdBy',data?.createdBy)
         formData.append('thumbnail',data?.thumbnail)
         console.log("vggfhkthk");
-        const response = axiosInstance.post('/course/',formData)
+        const response = axiosInstance.post('/course/',{
+            withCredentials: true, // Include cookies in the request
+        },formData)
         console.log("res"+(await response).data);
         toast.promise(response,{
             loading:'Creating new course',
