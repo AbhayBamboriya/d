@@ -9,6 +9,7 @@ input:focus{
 }
 input{
     border-radius: 10%;
+    display: none;
 }
 #pokemon-name-search {
     /* margin-top: 2rem; */
