@@ -136,3 +136,24 @@ button:hover {
         font-size: 14px; /* Smaller font size for buttons */
     }
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 5px 10px;
+}
+
+button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

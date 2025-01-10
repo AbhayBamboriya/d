@@ -72,5 +72,3 @@ function PokemonDetails({pokemonName}){
 } 
 
 export default PokemonDetails
-
-

@@ -12,8 +12,8 @@ function Pokedex(){
     return (    
         <div className="pokedex-wrapper">  
             
-            <div className="search">
-            <Search updateSearchTerm={setSearchTerm} placeholder={'Enter Name of Pokemon'}/>
+            <div className="search ">
+            <Search updateSearchTerm={setSearchTerm} placeholder={'Enter Name of Pokemon'} className="input"/>
             <button onClick={()=>navigate('/types')} className="btn"><span>Search By Type</span></button>
             </div>
             {/* {searchTerm} */}

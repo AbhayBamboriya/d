@@ -7,7 +7,7 @@ function usePokemonList(){
     const [pokemonListState,setPokemonListState]=useState({
         pokemonList:[],
         isLoading:true,
-        pokedexUrl:'https://pokeapi.co/api/v2/pokemon',
+        pokedexUrl:'https://pokeapi.co/api/v2/pokemon?limit=20',
         nextUrl:'',
         prevUrl:'',
         type:''
@@ -24,7 +24,6 @@ function usePokemonList(){
             // const response=await axios.get(pokedexUrl) //download the list of 20 pokemon
             const response=await axios.get(pokemonListState.pokedexUrl)
             const pokemonResults=response.data.results  //get the arraay of pokemons from result
-            // console.log('pokemon result',pokemonResults);
     
             // setPrevUrl(response.data.previous)
             // setNextUrl(response.data.next)

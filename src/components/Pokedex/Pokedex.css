@@ -1,7 +1,7 @@
 /* Existing styles */
 .search {
     display: flex;
-    width: 100%;
+    /* width: 100%; */
     justify-content: center;
 }
 
@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 .btn span {
@@ -22,6 +23,7 @@
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
+    width: 20vw;
     cursor: pointer;
     font-size: 16px;
     transition: background 0.3s ease;
@@ -39,10 +41,13 @@
         flex-direction: column; /* Stack elements vertically */
         align-items: center; /* Center align items */
         gap: 10px; /* Add some space between elements */
+        /* width: 10%; */
     }
+   
 
     .btn {
-        width: 100%; /* Make the button full width */
+        /* width: 100%; Make the button full width */
+        width: 22vw;
         font-size: 18px; /* Adjust font size for better readability */
     }
 

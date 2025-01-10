@@ -1,13 +1,18 @@
 .search-wrapper {
-
+    /* border-radius: 120%; */
     height: 60px;
 }
 input:focus{
     color: rebeccapurple;
+  
     font-size: 25px;
+}
+input{
+    border-radius: 10%;
 }
 #pokemon-name-search {
     /* margin-top: 2rem; */
-    width: 600px;
+    width: 40vw;
+    /* width: 70%; */
     padding: 1.5rem;
 }

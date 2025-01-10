@@ -8,7 +8,8 @@ import Loader from '../PreLoader/Loader';
 function PokemonList(){
 
     const{pokemonListState,setPokemonListState}=usePokemonList(false);    
-
+    console.log('pokemon list',pokemonListState);
+    
     return(
     
         <div className="pokemon-list-wrapper">
@@ -38,8 +39,6 @@ function PokemonList(){
                         ...pokemonListState,
                         pokedexUrl:urlToSet
                     })}}>
-                        
-                        {/* console.log(pokemonListState); */}
                     Next
                 </button>
             </div> 
