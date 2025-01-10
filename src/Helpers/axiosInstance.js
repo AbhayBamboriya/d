@@ -4,6 +4,6 @@ import axios from "axios";
 // const changePasswordUrl='localhost:4051/api/v1/user/password'
 const  axiosInstance=axios.create(); 
 // axiosInstance.defaults.changeUrl=changePasswordUrl
-axiosInstance.defaults.baseURL=process.env.BASE_URL
+axiosInstance.defaults.baseURL="https://lms-server-10l8.onrender.com/api/v1"
 axiosInstance.defaults.withCredentials=true
 export default axiosInstance
