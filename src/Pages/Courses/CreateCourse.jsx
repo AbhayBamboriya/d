@@ -44,12 +44,14 @@ import { AiOutlineArrowLeft } from 'react-icons/ai';
     async function onFormSubmit(e){
         e.preventDefault();
         // it is used becaused as an when the form submitted it will load the page which we wont require
-
+        console.log('check1');
+        
         if(!userInput.title || !userInput.description || !userInput.category || !userInput.thumbnail || !userInput.createdBy){
             toast.error('All fields are mandatory')
             return
         }
-
+        console.log('check2');
+        
         const response = await dispatch(createNewCourse(userInput))
         if(response?.payload?.success){
             setUserInput({

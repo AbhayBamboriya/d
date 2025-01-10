@@ -61,6 +61,8 @@ const courseSlices=createSlice({
 
 export const createNewCourse = createAsyncThunk('/course/create',async (data) => {
     try{
+        console.log('check3');
+        
         let formData = new FormData()
         formData.append('title',data?.title)
         formData.append('description',data?.description)
@@ -68,9 +70,9 @@ export const createNewCourse = createAsyncThunk('/course/create',async (data) =>
         formData.append('createdBy',data?.createdBy)
         formData.append('thumbnail',data?.thumbnail)
         console.log("vggfhkthk");
-        const response = axiosInstance.post('/course/',{
+        const response = axiosInstance.post('/course/',formData,{
             withCredentials: true, // Include cookies in the request
-        },formData)
+        })
         console.log("res"+(await response).data);
         toast.promise(response,{
             loading:'Creating new course',

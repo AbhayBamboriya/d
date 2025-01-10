@@ -54,7 +54,7 @@ function AdminDashboard(){
         datasets:[
             {
                 label:'Sales/Months',
-                // data:montlySalesRecord,
+                data:monthlySalesRecord,
                 backgroundColor:['rgb(255,99,132)'],
                 borderColor:['white'],
                 borderWidth:2
