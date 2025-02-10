@@ -4,7 +4,6 @@ import usePokemonDetails from "../../hooks/usePokemonDetails";
 import PokemonType from "../Types/PokemonType";
 import { useEffect, useRef, useState } from "react";
 function PokemonDetails({pokemonName}){
-    // const params=useParams()
     const [showComponent, setShowComponent] = useState({
         check:false,
         type:''
@@ -33,7 +32,6 @@ function PokemonDetails({pokemonName}){
         showComponent.check=false
     })
     return (
-    //    <section id="details">
         <div className="pokemon-details-wrapper">
             <div className="pokemon-name" ><span>{pokemon.name}</span></div>
             <img className="image pokemon-name" src={pokemon.image}/>
@@ -66,7 +64,6 @@ function PokemonDetails({pokemonName}){
                 </div>
             }
         </div>
-    //    </section>
     )
     
 } 

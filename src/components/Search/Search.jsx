@@ -12,10 +12,6 @@ function Search({updateSearchTerm,placeholder}){
     })
     const handleChange = (e) => {
         setLoading(true); 
-      
-    //    console.log(e.target.value.toLowerCase());
-       
-        
         debouncedCallback(e);
         // Set loading state when user types
         

@@ -1,19 +1,15 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import usePokemonName from "../hooks/usePokemonName";
-// import './pokemonindividual.css'
 import { useEffect, useState } from "react";
 import PokemonType from "./Types/PokemonType";
 function PokemonIndividual(){
     const {name}=useParams()
     const [pokemon]= usePokemonName(name)
-    // console.log('in pokemon individual',pokemon);
     const [showComponent, setShowComponent] = useState({
         check:false,
         type:''
     });
     function handle(t){
-        // console.log('called',t);
-        //  <PokemonType pokemonType={t} />
         console.log('res',showComponent.check ? false : true);
          console.log('called',showComponent);
          {console.log('before',showComponent.check,t)}
@@ -52,9 +48,6 @@ function PokemonIndividual(){
             )}
             </div>
             <br/>   
-              {/* <hr />     */}
-              {/* conditon */} 
-
               {showComponent.check && <PokemonType pokemonType={showComponent.type} />} 
             {!showComponent.check &&
             
