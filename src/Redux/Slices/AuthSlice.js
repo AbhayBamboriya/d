@@ -7,7 +7,7 @@ import changePasswordInstance from "../../Helpers/changePasswordInstance";
 import { act } from "react";
 // import { build } from "vite";    
 // authSlice is for authenticatino purpose
-//jadiya
+
 
 // initial state of auth slice
 const initialState={
