@@ -11,7 +11,7 @@ import PaginationExample from "../components/PaginationExample"
             <Routes>
                 <Route path="/" element={<Pokedex/>}/>
                 
-                <Route path="/pokemon/:id" element={<PokemonDetails/>}/>
+                <Route path={`/pokemon/:id`} element={<PokemonDetails/>}/>
                 {/* <Route path="/pokemon/:pn" element={<PokemonDetails/>}/> */}
                 <Route path={`/pokemonName/:name`} element={<PokemonIndividual/>}/>
                 <Route path="/types" element={<Types/>}/>

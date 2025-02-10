@@ -4,7 +4,7 @@ import usePokemonDetails from "../../hooks/usePokemonDetails";
 import PokemonType from "../Types/PokemonType";
 import { useEffect, useRef, useState } from "react";
 function PokemonDetails({pokemonName}){
-    const params=useParams()
+    // const params=useParams()
     const [showComponent, setShowComponent] = useState({
         check:false,
         type:''
@@ -19,7 +19,7 @@ function PokemonDetails({pokemonName}){
         
     }
     const navigate=useNavigate()
-    let {id,pn}=useParams()
+    const {id}=useParams()
     const [pokemon]=usePokemonDetails(id,pokemonName);
     console.log('refresh',pokemon);
     const ref=useRef()
