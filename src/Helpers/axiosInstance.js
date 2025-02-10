@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL=process.env.BASE_URL
+const BASE_URL="https://lms-server-10l8.onrender.com"
 
 const  axiosInstance=axios.create(); 
 
