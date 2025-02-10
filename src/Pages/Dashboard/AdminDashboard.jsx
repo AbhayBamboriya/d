@@ -36,15 +36,15 @@ function AdminDashboard(){
                 borderWidth:1,
                 borderColor:['yellow','green']
             },
-            // {
-            //     label:'User Detail',
-            //     data:[allUserCount,
-            //         79    ,10
-            //     ],
-            //     backgroundColor:['yellow','green','red'],
-            //     borderWidth:1,
-            //     borderColor:['yellow','green']
-            // }
+            {
+                label:'User Detail',
+                data:[allUserCount,
+                    79    ,10
+                ],
+                backgroundColor:['yellow','green','red'],
+                borderWidth:1,
+                borderColor:['yellow','green']
+            }
         ]
     }
 
@@ -87,7 +87,7 @@ function AdminDashboard(){
                 <h1 className="text-center text-5xl font=semibold text-yellow-500">
                     Admin Dashboard
                 </h1>
-                <div className="grid grid-cols-2 gap-5 m-auto mx-10">
+                <div className="grid grid-cols-2 gap-5 m-auto mx-10 l:flex flex-col">
                     <div className="flex flex-col items-center gap-10 p-5 shadow-lg rounded-md">
                         <div className="w-80 h-80 ">
                             {console.log('userData',userData)}

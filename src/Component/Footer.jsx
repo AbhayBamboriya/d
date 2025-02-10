@@ -7,7 +7,7 @@ function Footer(){
         <>
         {/* in relative we can defined the position using left,right,bottom,top */}
         {/* vh is relative unit */}
-        <footer className='relative left-0 bottom-0 h-[10vh] py-5 flex flex-col sm:flex-row items-center justify-between text-white bg-gray-800 sm:px-20 w-full'>
+        <footer className='relative left-0 bottom-0 h-[15vh] gap-20 py-5 flex  sm:flex-row items-center justify-between text-white bg-gray-800 sm:px-20 w-full'>
                 <section className='text-lg text-red'>
                     Copyright {year} | All rights reserved
                 </section>

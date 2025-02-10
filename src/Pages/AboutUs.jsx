@@ -6,7 +6,7 @@ function AboutUs(){
   
     return(
         <HomeLayout>
-            <div className="pl-20 pt-20 flex flex-col text-white">
+            <div className="p-10 pt-20 flex flex-col text-white bgred-300 w-full">
                 <div className="flex items-center gap-5 mx-10">
                     <section className="w-1/2 space-y-10">
                         <h1 className="text-5xl text-yellow-500 font-semibold">Affordable and quality Education</h1>
@@ -27,7 +27,7 @@ function AboutUs(){
                     </div>
                 </div>
                 {/* directly from website daisyui */}
-                <div className="carousel w-1/2 my-16 m-auto">
+                <div className="carousel w- my-16 m-auto">
                     {celebrities && celebrities.map(celebrity=>(<CarouselSlide {...celebrity} key={celebrity.slideNumber} totalSlide={celebrities.length}/>))}
                 </div>
             </div>

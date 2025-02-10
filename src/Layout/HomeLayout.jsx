@@ -30,7 +30,7 @@ function HomeLayout({children}){
         if(res?.payload?.success)   navigate('/')
     }
     return(
-        <div className="min-h-[90vh]">
+        <div className="min-h-[90vh] w-full bg-red-40">
             <div className="drawer absolute left-0 z-10 w-fit">
                 <input className="drawer-toggle" id="my-drawer" type="checkbox"/>
                 <div className="drawer-content">
