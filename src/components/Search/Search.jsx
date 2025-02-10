@@ -7,11 +7,15 @@ function Search({updateSearchTerm,placeholder}){
     const [loading, setLoading] = useState(false);
     const debouncedCallback=useDebounce((e)=>{
         
-        updateSearchTerm(e.target.value)
+        updateSearchTerm(e.target.value.toLowerCase())
         setLoading(false);  
     })
     const handleChange = (e) => {
         setLoading(true); 
+      
+    //    console.log(e.target.value.toLowerCase());
+       
+        
         debouncedCallback(e);
         // Set loading state when user types
         
