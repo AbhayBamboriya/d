@@ -103,6 +103,31 @@ export const login=createAsyncThunk('/auth/login',async(data) =>{
     }
 })
 
+
+export const changePassword=createAsyncThunk('/auth/changePassword',async(data) =>{
+    try{
+        console.log('login data',data);
+        const res=axiosInstance.post("/user/changePassword",data)
+       
+        toast.promise(res
+            // ,console.log('ressss'+res).toString()
+            ,{
+            loading:"Password Change is in Progress",
+            
+            success:(data)=>{
+                return data?.data?.message
+            },
+            error:"Failed to Change Password"
+           
+        });
+        // console.log('check');
+        return (await res).data
+    }
+    catch(e){
+        toast.error(e?.response?.data?.message)
+    }
+})
+
 export const logout = createAsyncThunk("/auth/logout",async ()=>{
     try{
         const res=axiosInstance.get("/user/logout")

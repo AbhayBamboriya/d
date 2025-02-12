@@ -22,6 +22,7 @@ import ResetPassword from './Pages/ResetPassword'
 import Checkout from './Pages/Payment/Checkout'
 import CheckoutSuccess from './Pages/Payment/CheckoutSuccess'
 import CheckoutFailure from './Pages/Payment/CheckoutFail'
+import ChangePassword from './Pages/ChangePassword'
 // import morgan from 'morgan'
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
                 <Route path='/checkout' element={<Checkout/>}/>
                 <Route path='/checkout/success' element={<CheckoutSuccess/>}/>
                 <Route path='/checkout/fail' element={<CheckoutFailure/>}/>
+                <Route path='/changePassword' element={<ChangePassword/>}/>
                 
                 <Route path='/user/editprofile' element={<EditProfile/>}/>
                 <Route path='/course/displaylecture' element={<DisplayLecture/>}/>

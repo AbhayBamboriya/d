@@ -74,7 +74,7 @@ function SignUp(){
         // [a-zA-Z0-9]{8,}         //should contain at least 8 from the mentioned characters
 
         // $/)
-        if(signupData.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/)){
+        if(!signupData.password.match(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/)){
             toast.error('Password should contain at least 8 character 1 digit 1 lower case 1 uppercase')
             return
         }
