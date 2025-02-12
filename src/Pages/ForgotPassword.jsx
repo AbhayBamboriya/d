@@ -25,7 +25,10 @@ function ForgotPassword(){
     async function makeRequest() {
         console.log('before');
   
-        await delay(1000);
+        setTimeout(() => {
+            console.log("This message appears after 3 seconds");
+        }, 3000); // 3000ms = 3 seconds
+        
   
         console.log('after');
       }
@@ -36,24 +39,13 @@ function ForgotPassword(){
             toast.error('Please fill the details');
             return
         }
-        // console.log('reached',mail.email);
-        const res=await dispatch(found(mail))
-            // toast.promise(res,
-            //     {
-            //         loading:'Wait! Authentication in Progress ',
-            //         success:(res)=>{
-            //             return res?.data?.message
-            //         },  
-            //         // error:'Enter a registered User Id'
-            //     }
-            // )
-        console.log('responseFromForgotPasswro',res)
-        if(res?.payload?.success){
+       
             const token=await dispatch(forgot(mail))
             // console.log(token?.payload?.data?.resetPasswordUrl,'resToken');
+
             console.log('tokenin',token);
             console.log(token?.payload?.data?.resetToken);
-            makeRequest()
+            // makeRequest()
             if(token?.payload?.data?.resetToken){
                 // <ResetPassword url='token?.payload?.data?.resetPasswordUrl'/>
                 // <Link to></Link>
@@ -62,7 +54,7 @@ function ForgotPassword(){
                 navigate('/resetPassword')
 
             }
-        }
+        
         setMail({
             email:"",
             // password:"",

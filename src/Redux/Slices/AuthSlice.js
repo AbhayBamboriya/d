@@ -69,6 +69,17 @@ export const forgot=createAsyncThunk('/forgot',async(data)=>{
     try{
         const res=axiosInstance.post('/user/reset',data)
         console.log('response forgot',await (res));
+
+        toast.promise(res,
+            {
+                loading:'Wait! Authentication in Progress ',
+                success:(res)=>{
+                    return "Enter Password"
+                },
+                error:'Enter a registered User Id'
+            }
+        )
+        
         return await res
     }
     catch(e){

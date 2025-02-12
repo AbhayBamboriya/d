@@ -14,7 +14,8 @@ function SignUp(){
         fullName:"",
         email:"",
         password:"",
-        avatar:""
+        avatar:"",
+        role:""
     })
 
     function handleUserInput(e){
@@ -47,7 +48,7 @@ function SignUp(){
 
     async function createNewAccount(e){
         e.preventDefault();
-        if(!signupData.avatar || !signupData.email || !signupData.fullName || !signupData.password){
+        if(!signupData.avatar || !signupData.email || !signupData.fullName || !signupData.password || !signupData.role){
             toast.error('Please fill all the details');
             return
         }
@@ -84,7 +85,7 @@ function SignUp(){
         formData.append("email",signupData.email)
         formData.append("password",signupData.password)
         formData.append("avatar",signupData.avatar)
-
+        formData.append("role",signupData.role)
         // dispatch creae account action
         console.log('form data',formData);
         const response=await dispatch(createAccount(formData))
@@ -97,7 +98,8 @@ function SignUp(){
         //     fullName:"",
         //     email:"",
         //     password:"",
-        //     avatar:""
+        //     avatar:"",
+        //     role:""
         // })
 
 
@@ -162,6 +164,11 @@ function SignUp(){
                             value={signupData.password}
                             />
                     </div>
+                    <select id="options" style={{ backgroundColor: 'transparent' }} className="bg-transparent mt-1 block w-full border text-3 md:h-[10%] lg:h-[10%]  max-sm:h-[20%] border-gray-300 bg-white p-3 rounded-xl shadow-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" name='role' value={signupData.role} onChange={handleUserInput}>
+                        <option value="" disabled selected className='bg-re-300 text-xl itali text-rose-500 focus:bg-red-400'>Role</option>
+                        <option value="ADMIN" className='bg-re-300 text-xl itali text-rose-500 focus:bg-red-400'>Admin</option>
+                        <option value="USER" className='bg-re-300 text-xl itali text-rose-500 hover:bg-red-400'>User</option>
+                    </select>
                     {/* ype-sumbmit page will get refresh */}
                     <button type="submit" className="bg-yellow-500 mt-2 hover:bg-yellow-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer">
                         Create Account
