@@ -9,6 +9,15 @@
 
     <!-- Class & Section Select Form -->
     <form action="/showStudents" method="GET" class="flex flex-col md:flex-row gap-4 mb-6">
+       <div class="flex-1">
+        <label for="sectionName" class="block mb-1 font-semibold">Select Year:</label>
+        <select name="year" id="year" class="w-full border p-2 rounded">
+          <option value="I" <%= selectedSection === 'I' ? 'selected' : '' %>>I st</option>
+          <option value="II" <%= selectedSection === 'II' ? 'selected' : '' %>>II nd</option>
+          <option value="III" <%= selectedSection === 'III' ? 'selected' : '' %>>III rd</option>
+          <option value="IV" <%= selectedSection === 'IV' ? 'selected' : '' %>>IV th</option>
+        </select>
+      </div>
       <div class="flex-1">
         <label for="className" class="block mb-1 font-semibold">Select Class:</label>
         <select name="className" id="className" class="w-full border p-2 rounded">
@@ -35,6 +44,16 @@
       <form action="/addStudent" method="POST" class="flex flex-col md:flex-row gap-4 mb-6 items-end">
         <input type="hidden" name="className" value="<%= selectedClass %>"> 
         <input type="hidden" name="sectionName" value="<%= selectedSection %>">
+        <input type="hidden" name="year" value="<%= selectedSection %>">
+        <div class="flex-1">
+        <label for="sectionName" class="block mb-1 font-semibold">Select Year:</label>
+        <select name="year" id="year" class="w-full border p-2 rounded">
+          <option value="I" <%= selectedSection === 'I' ? 'selected' : '' %>>I st</option>
+          <option value="II" <%= selectedSection === 'II' ? 'selected' : '' %>>II nd</option>
+          <option value="III" <%= selectedSection === 'III' ? 'selected' : '' %>>III rd</option>
+          <option value="IV" <%= selectedSection === 'IV' ? 'selected' : '' %>>IV th</option>
+        </select>
+      </div>
         <div>
           <label for="studentName" class="block mb-1 font-semibold">Student Name:</label>
           <input type="text" name="studentName" required class="border p-2 rounded w-full" />

@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
 
 const classSchema = new mongoose.Schema({
-  className: 
+  className: //to be changed to branch name
   {
     type: String,
     required: [true, 'Class name is required']
   },
-
+  year: 
+  {
+    type: String,
+    enum: ['I', 'II','III','IV'],
+  },
   sectionName: 
   {
     type: String,

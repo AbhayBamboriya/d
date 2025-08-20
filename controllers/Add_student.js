@@ -15,20 +15,23 @@ exports.getAddStudent = (req, res, next) => {
 
 exports.postAddStudent = async (req, res) => {
   try {
-    const { className, sectionName, students } = req.body;
+    const { className, sectionName, year,students } = req.body;
 
-    console.log('Received data:', { className, sectionName, students });
+    // console.log('Received data:', { className, sectionName, students });
 
     // Validate required fields
-    if (!className || !sectionName || !Array.isArray(students) || students.length === 0) {
+    if (!className || !year || !sectionName || !Array.isArray(students) || students.length === 0) {
       return res.status(400).json({ message: 'Invalid or incomplete data format' });
     }
 
-    let classDoc = await Student.findOne({ className, sectionName });
-
+    let classDoc = await Student.findOne({ className, sectionName ,year});
+    // console.log("class",classDoc);
+    
     if (classDoc) {
       const existingEnrollments = new Set(classDoc.students.map(s => String(s.enrollmentNo)));
       // Filter out students whose enrollmentNo already exists in the class
+      // console.log('see',existingEnrollments);
+      
       const uniqueStudents = students.filter(
         s => !existingEnrollments.has(String(s.enrollmentNo))
       );
@@ -38,11 +41,13 @@ exports.postAddStudent = async (req, res) => {
         return res.status(409).json({ message: 'All students already exist or are invalid.' });
       }
       classDoc.students.push(...uniqueStudents);
+      console.log('reached');
+      
       await classDoc.save();
     } 
     else {
       const validStudents = students.filter(s => s.name && String(s.enrollmentNo));
-      console.log('Valid students to be added:', validStudents);
+      // console.log('Valid students to be added:', validStudents);
       classDoc = new Student({
         className,
         sectionName,
@@ -52,16 +57,16 @@ exports.postAddStudent = async (req, res) => {
     }
     res.status(200).json({ message: 'Students saved successfully!' });
   } catch (error) {
-    console.error('Error saving students:', error);   
+    // console.error('Error saving students:', error);   
     res.status(500).json({ message: 'Internal server error' });
   }
 }
 
 exports.getStudentsByClassAndSection = async (req, res) => {
-  const { className, sectionName } = req.query;
+  const { className, sectionName ,year } = req.query;
   console.log('Query parameters:', { className, sectionName });
   console.log(req.session.IsLoggedIn);
-  if (!className || !sectionName) {
+  if (!className || !sectionName || !year) {
     return res.render('store/showStudents', {
       selectedClass: '',
       selectedSection: '',
@@ -72,7 +77,7 @@ exports.getStudentsByClassAndSection = async (req, res) => {
       user: req.session.user || {},
     });
   }
-    const classDoc = await Student.findOne({ className, sectionName });
+    const classDoc = await Student.findOne({ className, sectionName,year });
 
     if (!classDoc || classDoc.students.length === 0) {
       return res.render('store/showStudents', {
