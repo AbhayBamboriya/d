@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Attendance Report</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white shadow-xl rounded-2xl p-6 w-full max-w-4xl">
+    <h1 class="text-2xl font-bold text-center mb-4">Attendance Report</h1>
+
+    <p class="text-gray-700 mb-4 text-center">
+      <strong><%= branchName %> - Year <%= year %>, Sem <%= semester %>, Section <%= sectionName %></strong><br>
+      Subject: <strong><%= subject %></strong> | Date: <%= date %>
+    </p>
+
+    <div class="flex justify-between bg-gray-50 p-3 rounded-xl mb-4">
+      <span>Total Students: <strong><%= totalStudents %></strong></span>
+      <span class="text-green-600">Present: <strong><%= presentCount %></strong></span>
+      <span class="text-red-600">Absent: <strong><%= absentCount %></strong></span>
+    </div>
+
+    <table class="w-full border-collapse border border-gray-300">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="border p-2 text-left">Enrollment No</th>
+          <th class="border p-2 text-center">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% report.forEach(student => { %>
+          <tr class="<%= student.status === 'Present' ? 'bg-green-50' : student.status === 'Absent' ? 'bg-red-50' : '' %>">
+            <td class="border p-2"><%= student.enrollmentNo %></td>
+            <td class="border p-2 text-center font-bold">
+              <% if(student.status === 'Present'){ %>
+                <span class="text-green-600">Present</span>
+              <% } else if(student.status === 'Absent'){ %>
+                <span class="text-red-600">Absent</span>
+              <% } else { %>
+                <span class="text-gray-500">Not Marked</span>
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <div class="mt-6 text-center">
+      <a href="/report" class="text-blue-600 underline">Generate Another Report</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<main class="container">
+  <!-- Page Header -->
+  <h2 class="page-title">Attendance Report</h2>
+
+  <!-- Filter Card -->
+  <div class="card">
+    <h3 class="card-title">🔍 Filter Students by Attendance</h3>
+
+    <form id="attendanceForm" class="form-grid">
+      <!-- Branch -->
+      <div class="form-group">
+        <label for="branchName">Branch</label>
+        <select name="branchName" id="branchName" required>
+          <option value="">-- Select Branch --</option>
+          <option value="CSE">CSE</option>
+          <option value="ECE">ECE</option>
+          <option value="ME">ME</option>
+        </select>
+      </div>
+
+      <!-- Year -->
+      <div class="form-group">
+        <label for="year">Year</label>
+        <select name="year" id="year" required>
+          <option value="">-- Select Year --</option>
+          <option value="I">I</option>
+          <option value="II">II</option>
+          <option value="III">III</option>
+          <option value="IV">IV</option>
+        </select>
+      </div>
+
+      <!-- Semester (Dynamic) -->
+      <div class="form-group">
+        <label for="semester">Semester</label>
+        <select name="semester" id="semester" required>
+          <option value="">-- Select Semester --</option>
+        </select>
+      </div>
+
+      <!-- Section (Dynamic) -->
+      <div class="form-group">
+        <label for="sectionName">Section</label>
+        <select name="sectionName" id="sectionName" required>
+          <option value="">-- Select Section --</option>
+        </select>
+      </div>
+
+      <!-- Apply & Reset -->
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Apply</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+      </div>
+
+      <!-- Download Button -->
+      <div class="form-group">
+        <button type="button" id="downloadBtn" class="btn btn-success">⬇ Download</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<script>
+  const branchEl = document.getElementById("branchName");
+  const yearEl = document.getElementById("year");
+  const semesterEl = document.getElementById("semester");
+  const sectionEl = document.getElementById("sectionName");
+
+  let semesterData = []; // store fetched data to avoid multiple fetch calls
+
+  // Fetch semesters & sections when branch or year changes
+  async function fetchSemestersAndSections() {
+    const branch = branchEl.value;
+    const year = yearEl.value;
+
+    if (!branch || !year) {
+      semesterEl.innerHTML = '<option value="">-- Select Semester --</option>';
+      sectionEl.innerHTML = '<option value="">-- Select Section --</option>';
+      semesterData = [];
+      return;
+    }
+
+    try {
+      const response = await fetch(`/get-sem-sections?branchName=${branch}&year=${year}`);
+      semesterData = await response.json();
+
+      // Populate Semester Dropdown
+      semesterEl.innerHTML = '<option value="">-- Select Semester --</option>';
+      semesterData.forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item.semester;
+        opt.textContent = `Semester ${item.semester}`;
+        semesterEl.appendChild(opt);
+      });
+
+      sectionEl.innerHTML = '<option value="">-- Select Section --</option>';
+    } catch (err) {
+      console.error("Error fetching semesters/sections:", err);
+    }
+  }
+
+  // When semester changes, populate sections from already fetched data
+  semesterEl.addEventListener("change", () => {
+    const selectedSem = semesterEl.value;
+    const selectedObj = semesterData.find(item => item.semester === selectedSem);
+
+    sectionEl.innerHTML = '<option value="">-- Select Section --</option>';
+    if (selectedObj) {
+      selectedObj.sections.forEach(sec => {
+        const opt = document.createElement("option");
+        opt.value = sec;
+        opt.textContent = sec;
+        sectionEl.appendChild(opt);
+      });
+    }
+  });
+
+  branchEl.addEventListener("change", fetchSemestersAndSections);
+  yearEl.addEventListener("change", fetchSemestersAndSections);
+
+  // Form Submit
+  document.getElementById("attendanceForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const branch = branchEl.value;
+    const year = yearEl.value;
+    const semester = semesterEl.value;
+    const section = sectionEl.value;
+
+    if (!branch || !year || !semester || !section) {
+      alert("⚠ Please select all fields.");
+      return;
+    }
+
+    window.location.href = `/attendance/${branch}/${year}/${semester}/${section}`;
+  });
+
+  document.getElementById("downloadBtn").addEventListener("click", function () {
+    const branch = branchEl.value;
+    const year = yearEl.value;
+    const semester = semesterEl.value;
+    const section = sectionEl.value;
+
+    if (!branch || !year || !semester || !section) {
+      alert("⚠ Please select all fields to download report.");
+      return;
+    }
+
+    window.location.href = `/attendance/${branch}/${year}/${semester}/${section}/download`;
+  });
+</script>
+<!-- ✅ Old CSS Restored --> <style> body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 0; } .container { max-width: 900px; margin: 30px auto; padding: 20px; } .page-title { text-align: center; font-size: 28px; color: #3f51b5; margin-bottom: 15px; } .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1); } .card-title { font-size: 18px; margin-bottom: 15px; color: #333; } .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; } .form-group label { display: block; font-size: 14px; margin-bottom: 5px; color: #555; } select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; } .btn { padding: 8px 14px; border: none; border-radius: 5px; cursor: pointer; color: white; font-size: 14px; } .btn-primary { background: #3f51b5; } .btn-primary:hover { background: #2c3e9f; } .btn-secondary { background: #9e9e9e; } .btn-secondary:hover { background: #7d7d7d; } .btn-success { background: #4caf50; width: 100%; } .btn-success:hover { background: #3d8c40; } </style>
