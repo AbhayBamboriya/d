@@ -204,3 +204,72 @@ exports.getSemestersAndSections = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
+=======
+// controllers/attendanceController.js
+// const StudentAttendance = require("../models/StudentAttendance");
+
+exports.editAttendance = async (req, res) => {
+  try {
+    const {
+      branchName,
+      year,
+      semester,
+      sectionName,
+      date,
+      subject,
+      enrollmentNo,
+      status
+    } = req.body;
+
+    if (!branchName || !year || !semester || !sectionName || !date || !subject || !enrollmentNo || !status) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // 🔎 Find class record first
+    const classRecord = await StudentAttendance.findOne({
+      branchName,
+      year,
+      semester,
+      sectionName
+    });
+
+    if (!classRecord) {
+      return res.status(404).json({ error: "Class record not found" });
+    }
+
+    // 🔎 Find student inside class
+    const student = classRecord.students.find(s => s.enrollmentNo === enrollmentNo);
+    if (!student) return res.status(404).json({ error: "Student not found" });
+
+    // Normalize date to start of day for comparison
+    const targetDate = new Date(date);
+    targetDate.setHours(0, 0, 0, 0);
+
+    // Find attendance entry for that date
+    const attEntry = student.attendance.find(a => {
+      const attDate = new Date(a.date);
+      attDate.setHours(0, 0, 0, 0);
+      return attDate.getTime() === targetDate.getTime();
+    });
+
+    if (!attEntry) return res.status(404).json({ error: "Attendance entry for this date not found" });
+
+    // Find subject inside that date entry
+    const subEntry = attEntry.subjects.find(s => s.subject === subject);
+    if (!subEntry) return res.status(404).json({ error: "Subject not found for this date" });
+
+    // ✅ Update status
+    subEntry.status = status;
+
+    // Save the entire document
+    await classRecord.save();
+
+    res.json({ message: "Attendance updated successfully", updatedRecord: classRecord });
+  } catch (error) {
+    console.error("❌ Error updating attendance:", error);
+    res.status(500).json({ error: "Failed to update attendance" });
+  }
+};
+
+>>>>>>> eb02a28 (Teacher can edit Attendance)
