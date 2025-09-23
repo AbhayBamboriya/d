@@ -205,8 +205,7 @@ exports.getSemestersAndSections = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-=======
+
 // controllers/attendanceController.js
 // const StudentAttendance = require("../models/StudentAttendance");
 
@@ -273,4 +272,4 @@ exports.editAttendance = async (req, res) => {
   }
 };
 
->>>>>>> eb02a28 (Teacher can edit Attendance)
+// >>>>>>> eb02a28 (Teacher can edit Attendance)

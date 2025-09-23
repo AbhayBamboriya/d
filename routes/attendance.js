@@ -14,11 +14,9 @@ router.get("/report", (req, res) => {
 
 // Generate report after form submit
 router.get("/report/result", SubjectDetailsController.getSubjectAttendanceReport);
-<<<<<<< HEAD
-   
-=======
+
 router.put("/edit", SubjectDetailsController.editAttendance);
->>>>>>> eb02a28 (Teacher can edit Attendance)
+// >>>>>>> eb02a28 (Teacher can edit Attendance)
 
 
 router.get("/attendance/:branch/:year/:semester/:section", async (req, res) => {
