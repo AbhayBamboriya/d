@@ -17,7 +17,31 @@ router.get("/report/result", SubjectDetailsController.getSubjectAttendanceReport
 
 router.put("/edit", SubjectDetailsController.editAttendance);
 // >>>>>>> eb02a28 (Teacher can edit Attendance)
+router.get('/lab-students', async (req, res) => {
+    try {
+        const { className, year, semester, sectionName } = req.query;
 
+        // Find the class document based on the provided criteria
+        const classInfo = await student.findOne({
+            className,
+            year,
+            semester,
+            sectionName,
+        });
+
+        if (!classInfo) {
+            return res.status(404).json({ message: 'Class not found' });
+        }
+        console.log('reached hgere',classInfo.batches);
+        
+        // Return the full batches array
+        res.status(200).json({ batches: classInfo.batches });
+
+    } catch (error) {
+        console.error('Error fetching lab batches and students:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+})
 
 router.get("/attendance/:branch/:year/:semester/:section", async (req, res) => {
   try {
@@ -120,48 +144,27 @@ router.get("/attendance/:branch/:year/:semester/:section", async (req, res) => {
 // module.exports = router;
 
 router.post('/showList', async (req, res) => {
-  try {
-    const { className, sectionName, year, semester, subject, date } = req.body; // ✅ include semester
+  try {
+    const { className, sectionName, year, semester, subject, date } = req.body;
 
-    // Fetch class with students (now also filters by semester)
-    const classData = await student.findOne({ className, sectionName, year, semester });
+    // Fetch class with students
+    const classData = await student.findOne({ className, sectionName, year, semester });
 
-    if (!classData) {
-      return res.render('store/markAttendence', {
-        IsLoggedIn: true,
-        students: [],
-        pageTitle: 'Mark Attendance',
-        currentPage: 'Mark Attendance',
-        selectedClass: className,
-        selectedSection: sectionName,
-        selectedYear: year,
-        selectedSemester: semester, // ✅ pass to frontend
-        selectedSubject: subject,
-        user: req.session.user || {},
-        selectedDate: date,
-        toastMessage: null
-      });
-    }
+    if (!classData) {
+      // If class not found, send a JSON error response
+      return res.status(404).json({ students: [], message: 'No students found for this class.' });
+    }
 
-    // Render page with students list
-    res.render('store/markAttendence', {
-      pageTitle: 'Mark Attendance',
-      IsLoggedIn: true,
-      currentPage: 'Mark Attendance',
-      user: req.session.user || {},
-      students: classData.students,
-      selectedClass: className,
-      selectedSection: sectionName,
-      selectedYear: year,
-      selectedSemester: semester, // ✅ pass to frontend
-      selectedSubject: subject,
-      selectedDate: date,
-      toastMessage: null
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server Error');
-  }
+    // Send a JSON response with the students list
+    res.status(200).json({
+      students: classData.students,
+      message: 'Students list fetched successfully.'
+    });
+  } catch (err) {
+    console.error(err);
+    // Send a JSON error response on server error
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 // module.exports = router;
@@ -175,124 +178,109 @@ const StudentAttendance = require("../models/StudentAttendanceSchema");
 // 📌 Submit Attendance
 // Use this router.post("/submit-attendance", ...) to replace your current handler
 router.post("/submit-attendance", async (req, res) => {
-  try {
-    const { className, year, semester, sectionName, subject, attendance, date } = req.body;
-    const branchName = className;
+    try {
+        const { className, year, semester, sectionName, subject, attendance, date } = req.body;
+        const branchName = className;
+        console.log('readh', className, year, semester, sectionName, subject, attendance, date);
 
-    const parsedAttendance =
-      typeof attendance === "string" ? JSON.parse(attendance) : attendance;
+        // This part of the code is also a potential source of error if `attendance` is not a string
+        const parsedAttendance =
+            typeof attendance === "string" ? JSON.parse(attendance) : attendance;
 
-    if (!parsedAttendance || Object.keys(parsedAttendance).length === 0) {
-      return res.status(400).json({ message: "No attendance data provided" });
-    }
+        if (!parsedAttendance || Object.keys(parsedAttendance).length === 0) {
+            return res.status(400).json({ message: "No attendance data provided" });
+        }
 
-    const attendanceDate = date ? new Date(date) : new Date();
-    const isoDateStr = attendanceDate.toISOString().slice(0, 10);
+        const attendanceDate = date ? new Date(date) : new Date();
+        const isoDateStr = attendanceDate.toISOString().slice(0, 10);
 
-    let classDoc = await StudentAttendance.findOne({
-      branchName,
-      year,
-      semester,
-      sectionName,
-    });
-
-    if (!classDoc) {
-      classDoc = new StudentAttendance({
-        branchName,
-        year,
-        semester,
-        sectionName,
-        students: [],
-      });
-    }
-
-    for (const [enrollmentNo, status] of Object.entries(parsedAttendance)) {
-      if (!enrollmentNo) continue;
-
-      // 🔹 Ensure student exists
-      let student = classDoc.students.find((s) => s.enrollmentNo === enrollmentNo);
-      if (!student) {
-        student = classDoc.students.create({
-          enrollmentNo,
-          attendance: [],
-          totalClass: 0,
-          totalPresent: 0,
-          totalAbsent: 0,
-          subjectTotals: [],
+        let classDoc = await StudentAttendance.findOne({
+            branchName,
+            year,
+            semester,
+            sectionName,
         });
-        classDoc.students.push(student);
-      }
 
-      // 🔹 Find or create attendance record for date
-      let attendanceRecord = student.attendance.find(
-        (a) => new Date(a.date).toISOString().slice(0, 10) === isoDateStr
-      );
+        if (!classDoc) {
+            classDoc = new StudentAttendance({
+                branchName,
+                year,
+                semester,
+                sectionName,
+                students: [],
+            });
+        }
 
-      if (!attendanceRecord) {
-        attendanceRecord = student.attendance.create({
-          date: attendanceDate,
-          subjects: [],
-        });
-        student.attendance.push(attendanceRecord);
-      }
+        for (const [enrollmentNo, status] of Object.entries(parsedAttendance)) {
+            if (!enrollmentNo) continue;
 
-      // 🔹 Find or create subject entry
-      let subjectEntry = attendanceRecord.subjects.find((s) => s.subject === subject);
-      if (!subjectEntry) {
-        attendanceRecord.subjects.push({ subject, status });
-      } else {
-        subjectEntry.status = status; // Update if already exists
-      }
+            let student = classDoc.students.find((s) => s.enrollmentNo === enrollmentNo);
+            if (!student) {
+                student = classDoc.students.create({
+                    enrollmentNo,
+                    attendance: [],
+                    totalClass: 0,
+                    totalPresent: 0,
+                    totalAbsent: 0,
+                    subjectTotals: [],
+                });
+                classDoc.students.push(student);
+            }
 
-      // 🔹 Update totals
-      let subjectTotal = student.subjectTotals.find((st) => st.subject === subject);
-      if (!subjectTotal) {
-        subjectTotal = student.subjectTotals.create({
-          subject,
-          totalClass: 0,
-          totalPresent: 0,
-          totalAbsent: 0,
-        });
-        student.subjectTotals.push(subjectTotal);
-      }
+            let attendanceRecord = student.attendance.find(
+                (a) => new Date(a.date).toISOString().slice(0, 10) === isoDateStr
+            );
 
-      student.totalClass += 1;
-      subjectTotal.totalClass += 1;
-      if (status === "Present") {
-        student.totalPresent += 1;
-        subjectTotal.totalPresent += 1;
-      } else {
-        student.totalAbsent += 1;
-        subjectTotal.totalAbsent += 1;
-      }
+            if (!attendanceRecord) {
+                attendanceRecord = student.attendance.create({
+                    date: attendanceDate,
+                    subjects: [],
+                });
+                student.attendance.push(attendanceRecord);
+            }
 
-      // 🔹 Mark modified paths
-      classDoc.markModified("students");
-      classDoc.markModified("students.$.attendance");
-      classDoc.markModified("students.$.subjectTotals");
+            let subjectEntry = attendanceRecord.subjects.find((s) => s.subject === subject);
+            if (!subjectEntry) {
+                attendanceRecord.subjects.push({ subject, status });
+            } else {
+                subjectEntry.status = status;
+            }
+
+            let subjectTotal = student.subjectTotals.find((st) => st.subject === subject);
+            if (!subjectTotal) {
+                subjectTotal = student.subjectTotals.create({
+                    subject,
+                    totalClass: 0,
+                    totalPresent: 0,
+                    totalAbsent: 0,
+                });
+                student.subjectTotals.push(subjectTotal);
+            }
+
+            student.totalClass += 1;
+            subjectTotal.totalClass += 1;
+            if (status === "Present") {
+                student.totalPresent += 1;
+                subjectTotal.totalPresent += 1;
+            } else {
+                student.totalAbsent += 1;
+                subjectTotal.totalAbsent += 1;
+            }
+
+            classDoc.markModified("students");
+            classDoc.markModified("students.$.attendance");
+            classDoc.markModified("students.$.subjectTotals");
+        }
+
+        await classDoc.save({ validateModifiedOnly: true });
+
+        // Change this line to send a JSON response
+        res.status(200).json({ message: "Attendance saved successfully!" });
+
+    } catch (err) {
+        console.error("❌ Error saving attendance:", err);
+        return res.status(500).json({ message: "Internal Server Error", error: err.message });
     }
-
-    await classDoc.save({ validateModifiedOnly: true });
-
-    const toastMessage = { type: "success", text: "Attendance saved successfully!" };
-    res.render("store/markAttendence", {
-      selectedClass: "",
-      selectedSection: "",
-      selectedYear: "",
-      selectedSemester: "",
-      selectedSubject: "",
-      selectedDate: "",
-      pageTitle: "Mark Attendance",
-      currentPage: "Mark Attendance",
-      IsLoggedIn: true,
-      user: req.session.user || {},
-      students: [],
-      toastMessage,
-    });
-  } catch (err) {
-    console.error("❌ Error saving attendance:", err);
-    return res.status(500).json({ message: "Internal Server Error", error: err.message });
-  }
 });
 
 
