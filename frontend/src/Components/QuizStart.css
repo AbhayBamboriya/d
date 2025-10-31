@@ -1,0 +1,148 @@
+/* Basic Page Styling */
+.quiz-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #eef2ff, #f3e8ff);
+  padding: 30px;
+}
+
+/* Quiz Container */
+.quiz-container {
+  max-width: 750px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  padding: 30px 40px;
+}
+
+/* Title */
+.quiz-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4338ca;
+  margin-bottom: 25px;
+}
+
+/* Loading Text */
+.loading-text {
+  text-align: center;
+  color: #374151;
+}
+
+/* Question Section */
+.quiz-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.question-box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.question-text {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 10px;
+}
+
+/* Options */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  background: #ffffff;
+  transition: all 0.25s ease;
+}
+
+.option-label:hover {
+  background: #f3f4f6;
+}
+
+.option-label.selected {
+  background: #e0e7ff;
+  border-color: #6366f1;
+}
+
+.option-input {
+  margin-right: 8px;
+}
+
+/* Buttons */
+.button-center {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.submit-btn {
+  background: linear-gradient(to right, #22c55e, #16a34a);
+  color: white;
+  font-weight: 600;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(to right, #16a34a, #15803d);
+}
+
+/* Result Section */
+.result-section {
+  text-align: center;
+}
+
+.score-text {
+  font-size: 1.4rem;
+  color: #16a34a;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.restart-btn {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.restart-btn:hover {
+  background: #15803d;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .quiz-container {
+    padding: 20px;
+  }
+
+  .quiz-title {
+    font-size: 1.6rem;
+  }
+
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+}
