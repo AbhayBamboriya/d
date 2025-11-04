@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { forgot, found } from "../Redux/Slices/AuthSlice";
-import ResetPassword from "./ResetPassword";
-
+// import ResetPassword from "./ResetPassword";
+// import { toast } from "react-toastify";
 function ForgotPassword(){
     const dispatch =useDispatch();
     const navigate=useNavigate();
@@ -32,34 +32,37 @@ function ForgotPassword(){
   
         console.log('after');
       }
-    async function onForgot(e){
-        e.preventDefault();
-        // console.log('mail',mail);
-        if(!mail.email){
-            toast.error('Please fill the details');
-            return
-        }
-       
-            const token=await dispatch(forgot(mail))
-            // console.log(token?.payload?.data?.resetPasswordUrl,'resToken');
+  
+// import toast from "react-hot-toast";
 
-            console.log('tokenin',token);
-            console.log(token?.payload?.data?.resetToken);
-            // makeRequest()
-            if(token?.payload?.data?.resetToken){
-                // <ResetPassword url='token?.payload?.data?.resetPasswordUrl'/>
-                // <Link to></Link>
-                
-                
-                navigate('/resetPassword')
+async function onForgot(e) {
+    e.preventDefault();
 
-            }
-        
-        setMail({
-            email:"",
-            // password:"",
-        })
+    if (!mail.email) {
+        toast.error("Please fill the details");
+        return;
     }
+
+    // Create a loading toast and store its ID
+    const loadingToastId = toast.loading("Sending reset link...");
+
+    try {
+        const token = await dispatch(forgot(mail));
+        console.log("token", token);
+
+        if (token?.payload?.data?.success) {
+            toast.success("Reset link sent successfully! Check your mail", { id: loadingToastId ,duration:2000 });
+            // navigate("/resetPassword");
+        } else {
+            toast.error("Something went wrong! Try again.", { id: loadingToastId });
+        }
+    } catch (error) {
+        toast.error("Server error! Please try later.", { id: loadingToastId });
+    }
+
+    setMail({ email: "" });
+}
+
     return(
         <HomeLayout>
             <div className="flex items-center justify-center h-[100vh]"> 
