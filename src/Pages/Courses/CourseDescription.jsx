@@ -8,11 +8,11 @@ function CourserDescription(){
     const {state} = useLocation()
     const navigate=useNavigate()
     const {role , data} = useSelector((state) => state.auth)
-    console.log('state jdfdfd0',state);
-   console.log("active:", data?.active, Array.isArray(data?.active));
+    console.log('state jdfdfd0',data);
+   console.log("active:", data?.active, Array.isArray(data?.activeSubscriptions));
 console.log("active value:", data?.active);
 console.log("type of active:", typeof data?.active);
-const activeArray = Object.values(data?.active || {});
+const activeArray = Object.values(data?.activeSubscriptions || {});
 const isActive = activeArray.map(String).includes(String(state._id));
 
     

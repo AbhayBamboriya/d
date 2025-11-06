@@ -4,21 +4,16 @@ import { useNavigate } from 'react-router-dom';
 function CourseCard({ data }) {
     const navigate = useNavigate();
     const persistedData = JSON.parse(localStorage.getItem("persist:root"));
-const authData = JSON.parse(persistedData?.auth || "{}");
+    const authData = JSON.parse(persistedData?.auth || "{}");
+    const isLoggedIn = localStorage.getItem("isLoggedIn") || false; 
+    let isEnrolled ;
+   if (isLoggedIn) {
+      const datai = useSelector((state) => state?.auth?.data?.activeSubscriptions);
+    console.log("active:", datai);
+     isEnrolled = datai.includes(String(data?._id));
+    console.log("isEnrolled:", isEnrolled);
+}
 
-const datai = localStorage.getItem("active"); // ✅ this is your active object
-
-console.log("active:", datai);
-console.log("isArray:", Array.isArray(datai));
-    
-    // const { datai } = useSelector((state) => state?.auth?.data?.active);
-const activeObj = JSON.parse(datai);  // converts string → object
-    const activeArray = Object.values(activeObj || {}).map(String);
-    console.log('dad',activeArray);
-    
-    const isEnrolled = activeArray.includes(String(data?._id));
-    console.log(activeArray,'      ',data?._id);
-    
     return (
         <div
             onClick={() => navigate('/course/description/', { state: { ...data } })}
@@ -54,9 +49,13 @@ const activeObj = JSON.parse(datai);  // converts string → object
                     <span className='text-yellow-500 font-bold'>Instructor </span>
                     {data?.createdBy}
                 </p>
-                {!isEnrolled && (
+                {isLoggedIn && !isEnrolled ? (
                     <span className='absolute  my-10 bg-red-500 text-xs px-2 py-2 rounded'>
                         Not Enrolled
+                    </span>
+                ):(
+                    <span className='absolute  my-10 bg-green-500 text-xs px-2 py-2 rounded'>
+                        Enrolled
                     </span>
                 )}
             </div>

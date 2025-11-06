@@ -15,6 +15,7 @@ import { AiOutlineArrowLeft } from 'react-icons/ai';
         description:'',
         thumbnail:null,
         previewImage:''
+        ,fees:''
     })
     function handleImage(e){
         e.preventDefault()
@@ -46,7 +47,7 @@ import { AiOutlineArrowLeft } from 'react-icons/ai';
         // it is used becaused as an when the form submitted it will load the page which we wont require
         console.log('check1');
         
-        if(!userInput.title || !userInput.description || !userInput.category || !userInput.thumbnail || !userInput.createdBy){
+        if(!userInput.title || !userInput.description || !userInput.category || !userInput.thumbnail || !userInput.fees|| !userInput.createdBy){
             toast.error('All fields are mandatory')
             return
         }
@@ -57,6 +58,7 @@ import { AiOutlineArrowLeft } from 'react-icons/ai';
             setUserInput({
                 title:'',
                 category:'',
+                fees:'',
                 createdBy:'',
                 description:'',
                 thumbnail:null,
@@ -139,6 +141,20 @@ import { AiOutlineArrowLeft } from 'react-icons/ai';
                                     placeholder='Enter Course category' 
                                     className='bg-transparent px-2 py-1 border '
                                     value={userInput.category}
+                                    onChange={handleUserInput} />
+                            </div>
+
+
+ <div className='flex flex-col gap-1'>
+                                <label className='text-lg font-semibold' htmlFor='category'> Fees</label>
+                                <input 
+                                    type="number" 
+                                    required 
+                                    name='fees' 
+                                    id='fees' 
+                                    placeholder='Enter Course fees' 
+                                    className='bg-transparent px-2 py-1 border '
+                                    value={userInput.fees}
                                     onChange={handleUserInput} />
                             </div>
 

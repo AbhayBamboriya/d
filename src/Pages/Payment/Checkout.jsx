@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BiRupee } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { getRazorPayId, purchaseCourseBundle, verifyUserPayment } from "../../Redux/Slices/RazorpaySlice";
 import HomeLayout from "../../Layout/HomeLayout";
+import { getCourseDetail } from "../../Redux/Slices/CourseSlice";
 
 function Checkout() {
 
@@ -20,49 +21,64 @@ function Checkout() {
         razorpay_subscription_id: "",
         razorpay_signature: ""
     }
+    const [result,setResult]=useState(null)
     const {courseId} =useParams()
+    
     async function handleSubscription(e) {
         e.preventDefault();
         if(!razorpayKey || !subscription_id) {
             toast.error("Something went wrong");
             return;
         }
-        const options = {
-            key: razorpayKey,
-            subscription_id: subscription_id,
-            name: "Coursify Pvt. Ltd.",
-            description: "Subscription",
-            theme: {
-                color: '#F37254'
-                // color:'black'
-            },
-            
-            handler: async function (response) {
-                paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
-                paymentDetails.razorpay_signature = response.razorpay_signature;
-                paymentDetails.razorpay_subscription_id = response.razorpay_subscription_id;
-                paymentDetails.courseId=courseId;
-                toast.success("Payment successfull");
+       const options = {
+  key: razorpayKey,
 
-                const res=await dispatch(verifyUserPayment(paymentDetails));
-                console.log('after payment',res);
-                // console.log('payment verfied',ispaymentVerified );
-                
-                // res?.payload?.success ? navigate("/checkout/success") : navigate("/checkout/fail");
-                if(res?.payload?.success){
+  subscription_id: subscription_id,
+  name: "Coursify Pvt. Ltd.",
+  description: `Subscription for }`, // More meaningful
+  image: "/logo512.png", // add logo (must be https URL or public asset)
+  theme: {
+    color: "#4F46E5", // classy purple (or your brand color)
+    backdrop_color: "#00000080", // modal background blur
+    hide_topbar: false
+  },
 
-                    navigate("/checkout/success");
-                }
-                else{
-                    navigate("/checkout/fail");
-                }
-            }
-            ,prefill:{
-                email:userData.email
-                ,
-                name:userData.fullName
-            }
-        }
+  handler: async function (response) {
+    paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
+    paymentDetails.razorpay_signature = response.razorpay_signature;
+    paymentDetails.razorpay_subscription_id = response.razorpay_subscription_id;
+    paymentDetails.courseId = courseId;
+
+    toast.success("Payment Successful");
+
+    const res = await dispatch(verifyUserPayment(paymentDetails));
+    res?.payload?.success ? navigate("/checkout/success") : navigate("/checkout/fail");
+  },
+
+  prefill: {
+    email: userData.email,
+    name: userData.fullName,
+  },
+
+  notes: {
+    courseId: courseId,
+    userId: userData._id,
+    purchasedOn: new Date().toLocaleString(),
+  },
+
+  modal: {
+    // UI enhancements
+    ondismiss: () => toast.info("Payment popup closed"),
+    animation: true,
+    backdropclose: false, // prevents accidental close
+  },
+
+  retry: {
+    enabled: true,
+    max_count: 3, // auto retry up to 3 times
+  },
+};
+
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
     }
@@ -70,6 +86,8 @@ function Checkout() {
     async function load() {
         await dispatch(getRazorPayId());
         await dispatch(purchaseCourseBundle());
+        const res=await dispatch(getCourseDetail(courseId))
+        setResult(res)
     }
 
     useEffect(() => {
@@ -78,6 +96,8 @@ function Checkout() {
 
     return (
         <HomeLayout>
+            {console.log('data is sdskdsjs',result)
+            }
             <form
                 onSubmit={handleSubscription}
                 className="min-h-[90vh] flex items-center justify-center text-white"
@@ -96,7 +116,7 @@ function Checkout() {
                         </p>
 
                         <p className="flex items-center justify-center gap-1 text-2xl font-bold text-yellow-500">
-                            <BiRupee /><span>100</span> only
+                            <BiRupee /><span>{result?.payload?.course?.fees}</span> only
                         </p>
                         <div className="text-gray-200">
                             <p>100% refund on cancellation</p>

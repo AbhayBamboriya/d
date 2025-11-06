@@ -4,6 +4,19 @@ import { toast } from "react-hot-toast";
 const initialState = {
     courseData:[]
 }
+export const getCourseDetail = createAsyncThunk('/checkout/:id',async(id)=>{
+    try{
+        const res=await axiosInstance.get(`/course/course/${id}`,{
+            withCredentials: true, // Include cookies in the request
+        })
+        console.log('in fronted',res);
+        
+        return res.data
+    }
+    catch(e){
+        toast.error(e?.response?.data?.message)
+    }
+})
 export const getAllCourses = createAsyncThunk("/course/get",async()=>{
     try{
         const response=axiosInstance.get("/course")
@@ -67,6 +80,7 @@ export const createNewCourse = createAsyncThunk('/course/create',async (data) =>
         formData.append('title',data?.title)
         formData.append('description',data?.description)
         formData.append('category',data?.category)
+        formData.append('fees',data?.fees)
         formData.append('createdBy',data?.createdBy)
         formData.append('thumbnail',data?.thumbnail)
         console.log("vggfhkthk");

@@ -18,6 +18,8 @@ export const getRazorPayId = createAsyncThunk('/razorpay/getId',async()=>{
         const res=await axiosInstance.get('/payments/razorpay-key',{
             withCredentials: true, // Include cookies in the request
         })
+        console.log('dssd',res);
+        
         return res.data
     }
     catch(e){
@@ -25,11 +27,17 @@ export const getRazorPayId = createAsyncThunk('/razorpay/getId',async()=>{
     }
 }) 
 
+
+
 export const purchaseCourseBundle = createAsyncThunk('/purchaseCourse',async()=>{
     try{
+        console.log('course bundel');
+        
         const res=await axiosInstance.post('/payments/subscribe',{
             withCredentials: true, // Include cookies in the request
         })
+        console.log('skdsvgh',res);
+        
         return res.data
     }
     catch(e){
@@ -106,6 +114,8 @@ const razorpaySlice=createSlice({
             state.key=action?.payload?.key
         })
         .addCase(purchaseCourseBundle.fulfilled,(state,action)=>{
+            console.log('sdksdj',action?.payload);
+            
             state.subscription_id=action?.payload?.subscription_id
         })
         .addCase(verifyUserPayment.fulfilled,(state,action)=>{
