@@ -8,6 +8,16 @@ function CourserDescription(){
     const {state} = useLocation()
     const navigate=useNavigate()
     const {role , data} = useSelector((state) => state.auth)
+    console.log('state jdfdfd0',state);
+   console.log("active:", data?.active, Array.isArray(data?.active));
+console.log("active value:", data?.active);
+console.log("type of active:", typeof data?.active);
+const activeArray = Object.values(data?.active || {});
+const isActive = activeArray.map(String).includes(String(state._id));
+
+    
+    // const isActive = data?.active?.map(String).includes(String(state._id));
+
 
     const dispatch = useDispatch()
     async function deleteCourse(state){
@@ -46,12 +56,13 @@ function CourserDescription(){
                                 </p>
                             </div>
                             {
-                                role==='ADMIN' || data?.subscription?.status==="active"? ( 
+                                role==='ADMIN' || isActive
+? ( 
                                     <button onClick={()=>navigate('/course/displaylecture',{state:{...state}})} className='bg-yellow-600 text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-yellow-500 transition-all ease-in-out duration-300'>
                                         Watch Lectures
                                     </button>
                                 ) : (
-                                   <button onClick={()=>navigate('/checkout')}className='bg-yellow-600 text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-yellow-500 transition-all ease-in-out duration-300'>
+                                   <button onClick={()=>navigate(`/checkout/${state?._id}`)}className='bg-yellow-600 text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-yellow-500 transition-all ease-in-out duration-300'>
                                     Subscribe
                                    </button>
                             

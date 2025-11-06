@@ -1,41 +1,67 @@
-import { useNavigate } from 'react-router-dom'
-function CourseCard({data}){
-    const navigate=useNavigate()
-    console.log("Data",data);
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+function CourseCard({ data }) {
+    const navigate = useNavigate();
+    const persistedData = JSON.parse(localStorage.getItem("persist:root"));
+const authData = JSON.parse(persistedData?.auth || "{}");
+
+const datai = localStorage.getItem("active"); // ✅ this is your active object
+
+console.log("active:", datai);
+console.log("isArray:", Array.isArray(datai));
+    
+    // const { datai } = useSelector((state) => state?.auth?.data?.active);
+const activeObj = JSON.parse(datai);  // converts string → object
+    const activeArray = Object.values(activeObj || {}).map(String);
+    console.log('dad',activeArray);
+    
+    const isEnrolled = activeArray.includes(String(data?._id));
+    console.log(activeArray,'      ',data?._id);
+    
     return (
-       
         <div
-            onClick={()=>navigate('/course/description/',{state:{...data}})}
-         className='text-white w-[22rem] h-[430px] shadow-lg rounded-lg cursor-pointer group overflow-hidden bg-zinc-700'>
-            <div className='overflow-hidden'>
+            onClick={() => navigate('/course/description/', { state: { ...data } })}
+            className='text-white w-[22rem] h-[430px] shadow-lg rounded-lg cursor-pointer group overflow-hidden bg-zinc-700'
+        >
+            <div className='overflow-hidden relative'>
                 <img
-                    className='h-48 w-full rounded-tl-lg rounded-tr-lg group-hover:scale=[1,2] transition-all ease-in-out duration-300 '
+                    className='h-48 w-full rounded-tl-lg rounded-tr-lg group-hover:scale-[1.2] transition-all ease-in-out duration-300'
                     src={data?.thumbnail?.secure_url}
                     alt='Course Thumbnail'
                 />
-                <div className='p-3 space-y-1 text-white'>
-                    <h2 className='text-xl font-bold text-yellow-500 line-clamp-2'>
-                        {data?.title}
-                    </h2>
-                    <p className='line-clamp-2'>
-                        {data?.description}
-                    </p>
-                    <p className='font-semibold'>
-                        <span className='text-yellow-500 font-bold'>Category </span>
-                        {data?.category}
-                    </p>
-                    <p className='font-semibold'>
-                        <span className='text-yellow-500 font-bold'>Total Lectures </span>
-                        {data?.numberOfLecture}
-                    </p>
-                    <p className='font-semibold'>
-                        <span className='text-yellow-500 font-bold'>Instructor </span>
-                        {data?.createdBy}
-                    </p>
-                </div>
 
+                {/* ✅ Show badge if not enrolled */}
+                
+            </div>
+
+            <div className='p-3 space-y-1 text-white'>
+                <h2 className='text-xl font-bold text-yellow-500 line-clamp-2'>
+                    {data?.title}
+                </h2>
+                <p className='line-clamp-2'>
+                    {data?.description}
+                </p>
+                <p className='font-semibold'>
+                    <span className='text-yellow-500 font-bold'>Category </span>
+                    {data?.category}
+                </p>
+                <p className='font-semibold'>
+                    <span className='text-yellow-500 font-bold'>Total Lectures </span>
+                    {data?.numberOfLecture}
+                </p>
+                <p className='font-semibold'>
+                    <span className='text-yellow-500 font-bold'>Instructor </span>
+                    {data?.createdBy}
+                </p>
+                {!isEnrolled && (
+                    <span className='absolute  my-10 bg-red-500 text-xs px-2 py-2 rounded'>
+                        Not Enrolled
+                    </span>
+                )}
             </div>
         </div>
-    )
+    );
 }
-export default CourseCard
+
+export default CourseCard;

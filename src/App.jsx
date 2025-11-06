@@ -42,7 +42,8 @@ function App() {
           <Route path='/forgot'  element={<ForgotPassword/>}/>
           {/* <Route path='/checkout/success' element={<CheckoutSuccess/>}/> */}
           {/* <Route path='/checkout/fail' element={<CheckoutFailure/>}/> */}
-          <Route path='/resetPassword' element={<ResetPassword/>}/>
+         <Route path='/resetPassword/:token' element={<ResetPassword />} />
+
           <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
                 <Route path='/course/create' element={<CreateCourse/>}></Route>
                 <Route path='/course/addlecture' element={<Addlecture/>}></Route>
@@ -51,7 +52,7 @@ function App() {
           {/* <Route path='/course/displaylecture' element={<DisplayLecture/>}/> */}
           <Route element={<RequireAuth allowedRoles={["ADMIN","USER"]} />}>
                 <Route path='/user/profile' element={<Profile/>}/>
-                <Route path='/checkout' element={<Checkout/>}/>
+                <Route path='/checkout/:courseId' element={<Checkout/>}/>
                 <Route path='/checkout/success' element={<CheckoutSuccess/>}/>
                 <Route path='/checkout/fail' element={<CheckoutFailure/>}/>
                 <Route path='/changePassword' element={<ChangePassword/>}/>

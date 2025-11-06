@@ -4,30 +4,26 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { resetPassword } from "../Redux/Slices/AuthSlice";
-
+import { useParams } from "react-router-dom";
 function ResetPassword(){
     // console.log('ResetPaasword page',url);
-    
+      const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
     const t=4
     const state=useLocation()
-    const url= useSelector((state)=>state?.auth?.resetPasswordUrl)
-    const [passwordw ,setPassword]=useState({
+    const { token } = useParams();
+    // const url= useSelector((state)=>state?.auth?.resetPasswordUrl)
+    const [passwordw ,setPasswordw]=useState({
         password:"",
         // confirmPassword:"",
-        url:url
+        url:token
     })
     
    
     const navigate=useNavigate()
     const dispatch=useDispatch()
-    useEffect(()=>{
-        // console.log('hhh',useSelector((state)=>state?.auth?.resetPasswordUrl));
-        if(!url){
-            console.log('state',state);
-            console.log('coming');
-            navigate('/')
-        }
-    })
+   
     // useEffect(()=>{
     //     (
     //         async()=>{
@@ -61,13 +57,25 @@ function ResetPassword(){
         e.preventDefault()
         console.log('try');
         // if(!resetPasswordUrl) navigate('/')
-        if(!passwordw.password ){
-            toast.error('All Feilds are required');
+        if(!password || !confirmPassword){
+            toast.error('All Fields are required');
             return
         }
 
+         if(!password.match(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/)){
+            toast.error('Password should contain at least 8 character 1 digit 1 lower case 1 uppercase')
+            return
+        }
 
-        const res=await dispatch(resetPassword(passwordw))
+        if(password!==confirmPassword){
+             toast.error("Password and Confirm Password didn't match");
+            return
+        }
+         const payloadData = {
+        password: password,
+        url: token,
+    };
+        const res=await dispatch(resetPassword(payloadData))
         console.log('response from resetppassword',res);
         if(res?.payload?.success){
             navigate('/login')
@@ -80,47 +88,52 @@ function ResetPassword(){
     
     return(
         <HomeLayout>
-             <div className="flex items-center justify-center h-[100vh]"> 
-                <form noValidate onSubmit={onReset} className="flex flex-col justify-center gap-3 rounded-lg p-4 text-white w-96 shadow-[0_0_10px_black]">
-                    <h1 className="text-center text-2xl font-bold">
-                        Reset Your Password
-                    </h1>
+          
+    <div className="min-h-screen flex items-center justify-center bg-[#0d111] text-white px-4">
+      <div className="bg-[#161b22] p-8 rounded-lg w-full max-w-md shadow-lg">
+        <h2 className="text-3xl font-semibold text-center mb-4">Reset your password</h2>
+        <p className="text-gray-400 text-center mb-6">
+          Enter your new password. After confirming, you will be asked to log in again.
+          <br/><br/>
+       
+        </p>
 
+        <div className="space-y-4">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="New password"
+            className="w-full p-3 rounded-md bg-[#0d1117] border border-gray-600 focus:outline-none focus:border-cyan-400"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Confirm new password"
+              className="w-full p-3 rounded-md bg-[#0d1117] border border-gray-600 focus:outline-none focus:border-cyan-400"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <span
+              className="absolute right-3 top-3 cursor-pointer text-gray-400"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </span>
+          </div>
 
-                    <div className="flex flex-col gap-1">
-                        <label htmlFor="email" className="font-semibold">Password</label>
-                        <input type="password"
-                            required
-                            name="password"
-                            id="password"
-                            placeholder="Enter your Password"
-                            className="bg-transparent px-2 py-1 border"
-                            onChange={handleUserInput}
-                            value={passwordw.password}
-                            />
+          <button className="w-full bg-cyan-400 text-black font-semibold py-3 rounded-md hover:bg-cyan-300 transition" onClick={onReset}>
+            Reset password
+          </button>
+        </div>
 
-                    </div>
-                    {/* <div className="flex flex-col gap-1">
-                        <label htmlFor="password" className="font-semibold">Confirm Password</label>
-                        <input type="password"
-                            required
-                            name="confirmPassword"
-                            id="confirmPassword"
-                            placeholder="Enter your password"
-                            onChange={handleUserInput}
-                            value={password.confirmPassword}
-                            className="bg-transparent px-2 py-1 border"
-                            />
-                    </div> */}
-                    {/* ype-sumbmit page will get refresh */}
-                    <button type="submit" className="bg-yellow-500 mt-2 hover:bg-yellow-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer">
-                        Submit
-                    </button>
-
-                </form>
-
-            </div>
+        <p className="text-center mt-4 text-gray-400">
+          Never mind! <span className="underline cursor-pointer" onClick={()=> navigate('/login')}>Take me back to login</span>
+        </p>
+      </div>
+    </div>
+  
         </HomeLayout>
     )
 }

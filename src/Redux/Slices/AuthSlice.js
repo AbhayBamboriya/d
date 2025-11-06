@@ -237,6 +237,7 @@ const authSlice=createSlice({
             localStorage.setItem("data",JSON.stringify(action?.payload?.user))
             localStorage.setItem("isLoggedIn",true)
             localStorage.setItem("role",action?.payload?.user?.role)
+            localStorage.setItem("active",JSON.stringify(action?.payload?.user?.active))
             state.isLoggedIn=true
             state.data=action?.payload?.user
             state.role=action?.payload?.user?.role
@@ -244,6 +245,7 @@ const authSlice=createSlice({
         .addCase(logout.fulfilled,(state)=>{
             localStorage.clear();
             state.data={}
+            state.active={}
             state.isLoggedIn=false
             state.role=""
         })

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { BiRupee } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { getRazorPayId, purchaseCourseBundle, verifyUserPayment } from "../../Redux/Slices/RazorpaySlice";
 import HomeLayout from "../../Layout/HomeLayout";
@@ -20,7 +20,7 @@ function Checkout() {
         razorpay_subscription_id: "",
         razorpay_signature: ""
     }
-
+    const {courseId} =useParams()
     async function handleSubscription(e) {
         e.preventDefault();
         if(!razorpayKey || !subscription_id) {
@@ -41,14 +41,21 @@ function Checkout() {
                 paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
                 paymentDetails.razorpay_signature = response.razorpay_signature;
                 paymentDetails.razorpay_subscription_id = response.razorpay_subscription_id;
-
+                paymentDetails.courseId=courseId;
                 toast.success("Payment successfull");
 
                 const res=await dispatch(verifyUserPayment(paymentDetails));
                 console.log('after payment',res);
                 // console.log('payment verfied',ispaymentVerified );
                 
-                res?.payload?.success ? navigate("/checkout/success") : navigate("/checkout/fail");
+                // res?.payload?.success ? navigate("/checkout/success") : navigate("/checkout/fail");
+                if(res?.payload?.success){
+
+                    navigate("/checkout/success");
+                }
+                else{
+                    navigate("/checkout/fail");
+                }
             }
             ,prefill:{
                 email:userData.email

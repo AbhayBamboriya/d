@@ -3,98 +3,90 @@ import HomeLayout from "../Layout/HomeLayout"
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { forgot, found } from "../Redux/Slices/AuthSlice";
-// import ResetPassword from "./ResetPassword";
-// import { toast } from "react-toastify";
-function ForgotPassword(){
-    const dispatch =useDispatch();
-    const navigate=useNavigate();
-    const [mail,setMail]=useState({
-        email:"",
-    })
+import { forgot } from "../Redux/Slices/AuthSlice";
 
-    function handleUserInput(e){
-        const {name,value}=e.target;
-        // console.log('value',...loginData);
+function ForgotPassword() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [mail, setMail] = useState({
+        email: "",
+    });
+
+    function handleUserInput(e) {
+        const { name, value } = e.target;
         setMail({
             ...mail,
-            [name]:value
+            [name]: value
         })
     }
 
-    async function makeRequest() {
-        console.log('before');
-  
-        setTimeout(() => {
-            console.log("This message appears after 3 seconds");
-        }, 3000); // 3000ms = 3 seconds
-        
-  
-        console.log('after');
-      }
-  
-// import toast from "react-hot-toast";
+    async function onForgot(e) {
+        e.preventDefault();
 
-async function onForgot(e) {
-    e.preventDefault();
-
-    if (!mail.email) {
-        toast.error("Please fill the details");
-        return;
-    }
-
-    // Create a loading toast and store its ID
-    const loadingToastId = toast.loading("Sending reset link...");
-
-    try {
-        const token = await dispatch(forgot(mail));
-        console.log("token", token);
-
-        if (token?.payload?.data?.success) {
-            toast.success("Reset link sent successfully! Check your mail", { id: loadingToastId ,duration:2000 });
-            // navigate("/resetPassword");
-        } else {
-            toast.error("Something went wrong! Try again.", { id: loadingToastId });
+        if (!mail.email) {
+            toast.error("Please fill the details");
+            return;
         }
-    } catch (error) {
-        toast.error("Server error! Please try later.", { id: loadingToastId });
+
+        const loadingToastId = toast.loading("Sending reset link...");
+
+        try {
+            const token = await dispatch(forgot(mail));
+            console.log("token", token);
+
+            if (token?.payload?.data?.success) {
+                toast.success("Reset link sent successfully! Check your email", { id: loadingToastId, duration: 2000 });
+            } else {
+                toast.error("Something went wrong! Try again.", { id: loadingToastId });
+            }
+        } catch (error) {
+            toast.error("Server error! Please try later.", { id: loadingToastId });
+        }
+
+        setMail({ email: "" });
     }
 
-    setMail({ email: "" });
-}
-
-    return(
+    return (
         <HomeLayout>
-            <div className="flex items-center justify-center h-[100vh]"> 
-                <form noValidate onSubmit={onForgot} className="flex flex-col justify-center gap-3 rounded-lg p-4 text-white w-96 shadow-[0_0_10px_black]">
-                    <h1 className="text-center text-2xl font-bold">
-                        Forgot Password
-                    </h1>
+            <div className="min-h-screen flex items-center justify-center bg-[#0d117] text-white px-4">
+                <div className="bg-[#161b22] p-8 rounded-lg w-full max-w-md shadow-lg">
+                    <h2 className="text-3xl font-semibold text-center mb-4">Forgot Password</h2>
+                    <p className="text-gray-400 text-center mb-6">
+                        Enter your registered email and we'll send you a reset link.
+                    </p>
 
-
-
-                    <div className="flex flex-col gap-1">
-                        <label htmlFor="email" className="font-semibold">Email</label>
-                        <input type="email"
-                            required
+                    <form noValidate onSubmit={onForgot} className="space-y-4">
+                        <input
+                            type="email"
                             name="email"
-                            id="email"
-                            placeholder="Enter your Email"
-                            onChange={handleUserInput}
+                            placeholder="Enter your email"
+                            required
                             value={mail.email}
-                            // value={
-                            className="bg-transparent px-2 py-1 border"
-                            />
-                    </div>
+                            onChange={handleUserInput}
+                            className="w-full p-3 rounded-md bg-[#0d1117] border border-gray-600 focus:outline-none focus:border-cyan-400"
+                        />
 
-                    {/* pe-sumbmit page will get refresh */}
-                    <button type="submit" className="bg-yellow-500 mt-2 hover:bg-yellow-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer">
-                        Submit
-                    </button>
-                </form>
+                        <button
+                            type="submit"
+                            className="w-full bg-cyan-400 text-black font-semibold py-3 rounded-md hover:bg-cyan-300 transition"
+                        >
+                            Send reset link
+                        </button>
+                    </form>
 
+                    <p className="text-center mt-4 text-gray-400">
+                        Remembered password?{" "}
+                        <span
+                            className="underline cursor-pointer"
+                            onClick={() => navigate("/login")}
+                        >
+                            Go back to login
+                        </span>
+                    </p>
+                </div>
             </div>
         </HomeLayout>
     )
 }
-export default ForgotPassword
+
+export default ForgotPassword;

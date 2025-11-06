@@ -45,7 +45,8 @@ export const verifyUserPayment = createAsyncThunk('/payment/verify',async(data)=
         const res=await axiosInstance.post('/payments/verify',{
             razorpay_payment_id:data.razorpay_payment_id,
             razorpay_subscription_id:data.razorpay_subscription_id,
-            razorpay_signature:data.razorpay_signature
+            razorpay_signature:data.razorpay_signature,
+            courseId:data.courseId
         },{
             withCredentials: true, // Include cookies in the request
         })
