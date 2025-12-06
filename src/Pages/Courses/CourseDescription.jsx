@@ -3,26 +3,17 @@ import {useSelector , useDispatch } from 'react-redux'
 import HomeLayout from '../../Layout/HomeLayout';
 // import deleteCourseById from './Redux/Slices/CourseSlice.js'
 import { toast } from "react-hot-toast";
-import { deleteCourseById } from '../../Redux/Slices/CourseSlice';
+import { deleteCourseById, getplainId } from '../../Redux/Slices/CourseSlice';
+import { useEffect, useState } from 'react';
 function CourserDescription(){
     const {state} = useLocation()
     const navigate=useNavigate()
     const {role , data} = useSelector((state) => state.auth)
-    console.log('state jdfdfd0',data);
-   console.log("active:", data?.active, Array.isArray(data?.activeSubscriptions));
-console.log("active value:", data?.active);
-console.log("type of active:", typeof data?.active);
-const activeArray = Object.values(data?.activeSubscriptions || {});
-const isActive = activeArray.map(String).includes(String(state._id));
-
-    
-    // const isActive = data?.active?.map(String).includes(String(state._id));
-
-
+    const activeArray = Object.values(data?.activeSubscriptions || {});
+    const isActive = activeArray.map(String).includes(String(state._id));
+    const [planId,setPlanId]=useState();
     const dispatch = useDispatch()
     async function deleteCourse(state){
-        // console.log("s"+state?._id);
-        // alert.arguments
         window.alert('Sure You want to delete the Course')
        
         const res=await dispatch(deleteCourseById(state?._id))
@@ -30,7 +21,22 @@ const isActive = activeArray.map(String).includes(String(state._id));
         if(res?.payload?.success)   navigate('/courses')
 
     }
-     
+  
+useEffect(() => {
+  if (!state?._id) return;
+
+  const fetchPlan = async () => {
+    const res = await dispatch(getplainId(state._id));
+    if (res?.payload?.success) {
+        console.log('ddkfjsjsjaid in plac',res.payload);
+        
+      setPlanId(res.payload.id);
+    }
+  };
+
+  fetchPlan();
+}, [state?._id]);
+
     return(
         <HomeLayout>
             <div className='min-h-[90vh] pt-12 px-20 flex flex-col items-center justify-center text-white'>
@@ -62,7 +68,7 @@ const isActive = activeArray.map(String).includes(String(state._id));
                                         Watch Lectures
                                     </button>
                                 ) : (
-                                   <button onClick={()=>navigate(`/checkout/${state?._id}`)}className='bg-yellow-600 text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-yellow-500 transition-all ease-in-out duration-300'>
+                                   <button onClick={()=>navigate(`/checkout/${state?._id}`,{ state: { planId: planId }})}className='bg-yellow-600 text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-yellow-500 transition-all ease-in-out duration-300'>
                                     Subscribe
                                    </button>
                             

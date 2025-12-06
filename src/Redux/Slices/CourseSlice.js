@@ -34,6 +34,23 @@ export const getAllCourses = createAsyncThunk("/course/get",async()=>{
     }
 })
 
+
+
+export const getplainId=createAsyncThunk('/plan/id',async(data)=>{
+    try{
+        const response=await axiosInstance.get(`/subscriptionId/plan/${data}`,{
+            withCredentials: true, // Include cookies in the request
+        })
+        //  const planId = response?.payload?.success;
+        // console.log("vbfck"+planId);
+        
+        return (await response).data
+
+    }
+    catch(e){
+        toast.error(error?.response?.data?.message)
+    }
+})
 export const deleteCourseById=createAsyncThunk('/course/delete',async(data)=>{
     try{
         const response=axiosInstance.delete(`/course/${data}`,{

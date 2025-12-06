@@ -18,7 +18,7 @@ export const getRazorPayId = createAsyncThunk('/razorpay/getId',async()=>{
         const res=await axiosInstance.get('/payments/razorpay-key',{
             withCredentials: true, // Include cookies in the request
         })
-        console.log('dssd',res);
+        console.log('dssdsdsfkgjgjdjfabhay',res);
         
         return res.data
     }
@@ -29,12 +29,15 @@ export const getRazorPayId = createAsyncThunk('/razorpay/getId',async()=>{
 
 
 
-export const purchaseCourseBundle = createAsyncThunk('/purchaseCourse',async()=>{
+export const purchaseCourseBundle = createAsyncThunk('/purchaseCourse',async(data)=>{
     try{
-        console.log('course bundel');
+        console.log('akadjfjsh');
+        
+        console.log('course bundel',data);
         
         const res=await axiosInstance.post('/payments/subscribe',{
             withCredentials: true, // Include cookies in the request
+            planId:data.planId
         })
         console.log('skdsvgh',res);
         

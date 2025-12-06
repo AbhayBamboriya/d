@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BiRupee } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { getRazorPayId, purchaseCourseBundle, verifyUserPayment } from "../../Redux/Slices/RazorpaySlice";
 import HomeLayout from "../../Layout/HomeLayout";
@@ -11,6 +11,9 @@ import { getCourseDetail } from "../../Redux/Slices/CourseSlice";
 function Checkout() {
 
     const dispatch = useDispatch();
+    const { state } = useLocation();
+    console.log('ssksdjsd',state);
+    
     const navigate = useNavigate();
     const razorpayKey = useSelector((state) => state?.razorpay?.key);
     const ispaymentVerified=useSelector((state)=>state?.razorpay?.isPaymentVerified)
@@ -35,14 +38,23 @@ function Checkout() {
 
   subscription_id: subscription_id,
   name: "Coursify Pvt. Ltd.",
-  description: `Subscription for }`, // More meaningful
+//   description: `Subscription for }`, // More meaningful
   image: "/logo512.png", // add logo (must be https URL or public asset)
+    "total_count": 1,   // ❗ Only one payment
   theme: {
     color: "#4F46E5", // classy purple (or your brand color)
     backdrop_color: "#00000080", // modal background blur
     hide_topbar: false
   },
-
+  "method": {
+    //   "netbanking": true,
+    //   "card": true,
+      "upi": true,
+    //   "wallet": true,
+    //   "emi": true
+  },
+  display_amount: result?.payload?.course?.fees , // show amount in Razorpay popup
+  display_currency: "INR",
   handler: async function (response) {
     paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
     paymentDetails.razorpay_signature = response.razorpay_signature;
@@ -85,9 +97,11 @@ function Checkout() {
 
     async function load() {
           const res=await dispatch(getCourseDetail(courseId))
+          console.log('res in frontend',res);
+          
         setResult(res)
         await dispatch(getRazorPayId());
-        await dispatch(purchaseCourseBundle());
+        await dispatch(purchaseCourseBundle(state));
       
     }
 
