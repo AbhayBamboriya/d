@@ -49,15 +49,20 @@ function CourseCard({ data }) {
                     <span className='text-yellow-500 font-bold'>Instructor </span>
                     {data?.createdBy}
                 </p>
-                {isLoggedIn && !isEnrolled ? (
-                    <span className='absolute  my-10 bg-red-500 text-xs px-2 py-2 rounded'>
-                        Not Enrolled
-                    </span>
-                ):(
-                    <span className='absolute  my-10 bg-green-500 text-xs px-2 py-2 rounded'>
-                        Enrolled
-                    </span>
+               {isLoggedIn && (
+                    !isEnrolled ? (
+                        <span className='absolute my-10 bg-red-500 text-xs px-2 py-2 rounded'>
+                            Not Enrolled
+                        </span>
+                    ) : (
+                       isLoggedIn && (
+                         <span className='absolute my-10 bg-green-500 text-xs px-2 py-2 rounded'>
+                            Enrolled
+                        </span>
+                       )
+                    )
                 )}
+
             </div>
         </div>
     );
