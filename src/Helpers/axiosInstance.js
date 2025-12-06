@@ -1,7 +1,7 @@
 
 import axios from "axios";
-// const BASE_URL="https://lms-server-10l8.onrender.com/api/v1"
-const BASE_URL="http://localhost:4052/api/v1"
+const BASE_URL="https://lms-server-10l8.onrender.com/api/v1"
+// const BASE_URL="http://localhost:4052/api/v1"
 
 const  axiosInstance=axios.create(); 
 const url1 = import.meta.env.URL1;
