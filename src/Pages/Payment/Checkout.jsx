@@ -84,10 +84,11 @@ function Checkout() {
     }
 
     async function load() {
+          const res=await dispatch(getCourseDetail(courseId))
+        setResult(res)
         await dispatch(getRazorPayId());
         await dispatch(purchaseCourseBundle());
-        const res=await dispatch(getCourseDetail(courseId))
-        setResult(res)
+      
     }
 
     useEffect(() => {
