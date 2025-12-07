@@ -11,7 +11,7 @@ function CarouselSlide({name,title,discription,slideNumber,totalSlide,image}){
                                 </p>
                                 <h3 className="text-3xl font-semibold">{title}</h3>
                             </div>
-                            <div className="absolute flex justify-between transform -translate-y-1/2  left-1 right-1 m-10 top-1/2">
+                            <div className="absolute  flex justify-between transform -translate-y-1/2  left-1 right-1 m-10 top-1/2">
                                 <a href={`#slide${(slideNumber==1 ? totalSlide : (slideNumber-1))}`} className="btn btn-circle">❮</a> 
                                 <a href={`#slide${(slideNumber)%totalSlide+1}`} className="btn btn-circle">❯</a>
                             </div>
