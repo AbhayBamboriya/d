@@ -189,15 +189,7 @@ export const getUserData = createAsyncThunk("/user/details",async ()=>{
         toast.error(e.message)
     }
 })
-export const verifyToken= createAsyncThunk('/resetPassword',async(data)=>{
-    try{
-         const res=axiosInstance.post(`/user/verify/${data}`)
-         return (await res).data
-    }
-    catch(e){
-        toast.error(e.message)
-    }
-})
+
 export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
     try{
         console.log('reached1');
@@ -210,9 +202,9 @@ export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
         console.log('passwordSend',data.passwordW);
         // l=data.passwordW
         console.log('sending data',`/user/password/${data.url}`,data);
-        const res=axiosInstance.post(`/user/password/${data.url}`,data)
+        const res=await axiosInstance.post(`/user/password/${data.url}`,data)
 
-        console.log('reached');
+        console.log('reached from reset123445',res);
         toast.promise(res,{
             loading:"Wait! Reset Password in Progress ",
             
@@ -226,7 +218,7 @@ export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
     }
     catch(e){
         // console.log('error');
-        toast.error(e)
+            toast.error(e?.response?.data?.message)
     }
 })
 const authSlice=createSlice({
