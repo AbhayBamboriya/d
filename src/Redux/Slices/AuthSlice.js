@@ -189,7 +189,15 @@ export const getUserData = createAsyncThunk("/user/details",async ()=>{
         toast.error(e.message)
     }
 })
-
+export const verifyToken= createAsyncThunk('/resetPassword',async(data)=>{
+    try{
+         const res=axiosInstance.post(`/user/verify/${data}`)
+         return (await res).data
+    }
+    catch(e){
+        toast.error(e.message)
+    }
+})
 export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
     try{
         console.log('reached1');

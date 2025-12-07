@@ -3,7 +3,7 @@ import HomeLayout from "../Layout/HomeLayout"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { resetPassword } from "../Redux/Slices/AuthSlice";
+import { resetPassword, verifyToken } from "../Redux/Slices/AuthSlice";
 import { useParams } from "react-router-dom";
 function ResetPassword(){
     // console.log('ResetPaasword page',url);
@@ -75,11 +75,17 @@ function ResetPassword(){
         password: password,
         url: token,
     };
-        const res=await dispatch(resetPassword(payloadData))
-        console.log('response from resetppassword',res);
-        if(res?.payload?.success){
-            navigate('/login')
+
+        const result =await dispatch(verifyToken(payloadData?.url))
+        if(result?.payload?.success){
+            const res=await dispatch(resetPassword(payloadData))
+            console.log('response from resetppassword',res);
+            if(res?.payload?.success){
+                navigate('/login')
+            }
+
         }
+        
 
 
 
