@@ -40,7 +40,7 @@ function Profile() {
                         <p>Email:</p><p>{useerData?.email}</p>
                         <p>Role:</p><p>{useerData?.role}</p>
                         <p>Subscription:</p>
-                        <p>{useerData?.subscription?.status === 'active' ? 'Active' : 'Inactive'}</p>
+                        <p>{useerData?.role!="ADMIN" && useerData?.subscription?.status === 'active' ? 'Active' : 'Inactive'}</p>
                     </div>
 
                     {/* Button row responsive */}
@@ -70,7 +70,7 @@ function Profile() {
                         </Link>
                     </div>
 
-                    {useerData?.subscription?.status === 'active' && (
+                    {useerData?.role!="ADMIN" && useerData?.subscription?.status === 'active' && (
                         <button
                             onClick={handlecancellation}
                             className="
