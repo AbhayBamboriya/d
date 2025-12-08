@@ -24,6 +24,7 @@ export const getRazorPayId = createAsyncThunk('/razorpay/getId',async()=>{
     }
     catch(e){
         toast.error('Failed to load data')
+        throw e;
     }
 }) 
 
@@ -45,6 +46,7 @@ export const purchaseCourseBundle = createAsyncThunk('/purchaseCourse',async(dat
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 }) 
 
@@ -65,6 +67,8 @@ export const verifyUserPayment = createAsyncThunk('/payment/verify',async(data)=
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
+
     }
 }) 
 
@@ -84,6 +88,7 @@ export const getPaymentRecord = createAsyncThunk('/payment/record',async()=>{
     }
     catch(e){
         toast.error('Operation Failed')
+        throw e;
     }
 }) 
 
@@ -103,7 +108,9 @@ export const cancelCourseBundle = createAsyncThunk('/payment/cancel',async()=>{
         return (await res).data
     }
     catch(e){
+
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 }) 
 

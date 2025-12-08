@@ -27,6 +27,7 @@ export const getStatesData=createAsyncThunk('/stats/get',async()=>{
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 const stateSlice=createSlice({

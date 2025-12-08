@@ -15,6 +15,7 @@ export const getCourseDetail = createAsyncThunk('/checkout/:id',async(id)=>{
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 export const getAllCourses = createAsyncThunk("/course/get",async()=>{
@@ -31,6 +32,7 @@ export const getAllCourses = createAsyncThunk("/course/get",async()=>{
     }
     catch(e){
         toast.error(error?.response?.data?.message)
+        throw e;
     }
 })
 
@@ -49,6 +51,7 @@ export const getplainId=createAsyncThunk('/plan/id',async(data)=>{
     }
     catch(e){
         toast.error(error?.response?.data?.message)
+        throw e;
     }
 })
 export const deleteCourseById=createAsyncThunk('/course/delete',async(data)=>{
@@ -69,6 +72,7 @@ export const deleteCourseById=createAsyncThunk('/course/delete',async(data)=>{
     }
     catch(e){
         toast.error(error?.response?.data?.message)
+        throw e;
     }
 })
 const courseSlices=createSlice({

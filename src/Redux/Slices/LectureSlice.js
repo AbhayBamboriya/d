@@ -23,6 +23,7 @@ export const getAllCoursesLectures = createAsyncThunk("/courses/lecture/get", as
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 
@@ -49,6 +50,7 @@ export const addCourseLecture = createAsyncThunk("/courses/lecture/added", async
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 
@@ -68,6 +70,7 @@ export const deleteCourseLecutre = createAsyncThunk("/courses/lecture/delete", a
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 

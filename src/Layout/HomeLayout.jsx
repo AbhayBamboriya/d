@@ -100,8 +100,8 @@ function HomeLayout({children}){
                                        <button className='btn-primary px-4 py-1 font-semibold rounded-md w-full bg-purple-700 hover:bg-purple-900'>
                                            <Link to='/user/profile'>Profile</Link>
                                        </button>
-                                       <button className='btn-secondary px-4 py-1 font-semibold rounded-md w-full bg-pink-700 hover:bg-pink-800'>
-                                           <Link onClick={handleLogout}>Logout</Link>
+                                       <button onClick={handleLogout} className='btn-secondary px-4 py-1 font-semibold rounded-md w-full bg-pink-700 hover:bg-pink-800'>
+                                        Logout
                                        </button>
                                    </div>
                                </li>

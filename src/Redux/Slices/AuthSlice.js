@@ -40,6 +40,7 @@ export const createAccount=createAsyncThunk('/auth/signup',async(data) =>{
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 
@@ -63,6 +64,7 @@ export const found=createAsyncThunk('/found',async(data)=>{
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 export const forgot=createAsyncThunk('/forgot',async(data)=>{
@@ -83,7 +85,8 @@ export const forgot=createAsyncThunk('/forgot',async(data)=>{
         return await res
     }
     catch(e){
-        toast.error(e?.response?.data?.message)   
+        toast.error(e?.response?.data?.message)  
+        throw e; 
     }
 })
 export const login=createAsyncThunk('/auth/login',async(data) =>{
@@ -111,6 +114,7 @@ export const login=createAsyncThunk('/auth/login',async(data) =>{
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 
@@ -136,6 +140,7 @@ export const changePassword=createAsyncThunk('/auth/changePassword',async(data) 
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 
@@ -156,6 +161,7 @@ export const logout = createAsyncThunk("/auth/logout",async ()=>{
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 
@@ -175,6 +181,7 @@ export const updateProfile = createAsyncThunk("/user/update/profile",async (data
     }
     catch(e){
         toast.error(e?.response?.data?.message)
+        throw e;
     }
 })
 
@@ -187,6 +194,7 @@ export const getUserData = createAsyncThunk("/user/details",async ()=>{
     }
     catch(e){
         toast.error(e.message)
+        throw e;
     }
 })
 
@@ -219,6 +227,7 @@ export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
     catch(e){
         // console.log('error');
             toast.error(e?.response?.data?.message)
+            throw e;
     }
 })
 const authSlice=createSlice({
