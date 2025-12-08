@@ -53,7 +53,7 @@ function EditProfile(){
             toast.error('Name should be greater then 5 character')
             return
         }
-        if(!data.fullName.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
+        if(data.fullName && !data.fullName.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
             toast.error('Name should be legit')
             return
         }
