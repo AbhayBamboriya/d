@@ -53,12 +53,12 @@ function SignUp(){
             return
         }
 
-        // checking mane field length
-        if(signupData.fullName.length<5){
-            toast.error('Name should be atleast of 5 characters')
+        
+
+        if(!signupData.fullName.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
+            toast.error('Name should be legit')
             return
         }
-
         // o get email validator regex google-email regex javascript 
         // checking for the valid email
         if(!isEmail(signupData.email)){

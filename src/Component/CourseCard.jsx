@@ -28,8 +28,8 @@ function CourseCard({ data }) {
             </div>
 
             <div className='p-3 space-y-1 text-white'>
-                <h2 className='text-xl font-bold text-yellow-500 line-clamp-2'>
-                    {data?.title}
+                  <h2 className='text-xl font-bold text-yellow-500 line-clamp-1'>
+                    {data?.title?.length > 15 ? data.title.slice(0, 15) + "..." : data.title}
                 </h2>
 
                 <p className='line-clamp-2'>{data?.description}</p>
@@ -51,11 +51,11 @@ function CourseCard({ data }) {
 
                 {isLoggedIn && (
                     !isEnrolled ? (
-                        <span className='absolute my-10 bg-red-500 text-xs px-2 py-2 rounded'>
+                        <span className='absolute mt-10 my-10 bg-red-500 text-xs px-2 py-2 rounded'>
                             Not Enrolled
                         </span>
                     ) : (
-                        <span className='absolute my-10 bg-green-500 text-xs px-2 py-2 rounded'>
+                        <span className='absolute mt-10 my-10 bg-green-500 text-xs px-2 py-2 rounded'>
                             Enrolled
                         </span>
                     )

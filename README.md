@@ -1,3 +1,3 @@
 for Admin account
-userid-bamboriya09@gmail.com
-password-Xxyz@123
+userid-advait.gupta7686@example.com
+password-Admin@123

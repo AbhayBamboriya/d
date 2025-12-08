@@ -45,12 +45,16 @@ function EditProfile(){
     async function onFormsubmit(e){
         e.preventDefault()
         console.log(data);
-        if(!data.fullName){
-            toast.error('All fields are mandatory')
+        if(!data.avatar && !data.fullName){
+            toast.error('Name or Profile is mandatory')
             return
         }
-        if(data.fullName.length<5){
+        if(data.fullName){
             toast.error('Name should be greater then 5 character')
+            return
+        }
+        if(!data.fullName.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
+            toast.error('Name should be legit')
             return
         }
         const formData=new FormData()

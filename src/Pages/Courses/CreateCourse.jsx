@@ -9,6 +9,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 function CreateCourse() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [userInput, setUserInput] = useState({
     title: "",
@@ -20,22 +21,36 @@ function CreateCourse() {
     fees: ""
   });
 
+  // Handle Image Upload
   function handleImage(e) {
     e.preventDefault();
     const uploadedImage = e.target.files[0];
-    if (uploadedImage) {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(uploadedImage);
-      fileReader.addEventListener("load", function () {
-        setUserInput({
-          ...userInput,
-          previewImage: this.result,
-          thumbnail: uploadedImage
-        });
-      });
+    if (!uploadedImage) return;
+
+    // Validate file type
+    if (!["image/jpeg", "image/png","image/webp"].includes(uploadedImage.type)) {
+      toast.error("Only JPG/PNG files allowed");
+      return;
     }
+
+    // Validate file size (< 2MB)
+    if (uploadedImage.size > 2 * 1024 * 1024) {
+      toast.error("Image size must be less than 2MB");
+      return;
+    }
+
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(uploadedImage);
+    fileReader.addEventListener("load", function () {
+      setUserInput({
+        ...userInput,
+        previewImage: this.result,
+        thumbnail: uploadedImage
+      });
+    });
   }
 
+  // Handle input changes
   function handleUserInput(e) {
     const { name, value } = e.target;
     setUserInput({
@@ -44,6 +59,7 @@ function CreateCourse() {
     });
   }
 
+  // Form submission
   async function onFormSubmit(e) {
     e.preventDefault();
 
@@ -59,9 +75,33 @@ function CreateCourse() {
       return;
     }
 
+    if(!userInput.title.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
+                toast.error('Title should be legit')
+                return
+            }
+
+
+    if (Number(userInput.fees) <= 0) {
+      toast.error("Fees must be greater than 0");
+      return;
+    }
+      if(!userInput.category.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
+                toast.error('Category should be legit')
+                return
+            }
+            
+    if(!userInput.description.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
+                toast.error('Description should be legit')
+                return
+            }
+
+
+    setLoading(true);
     const response = await dispatch(createNewCourse(userInput));
+    setLoading(false);
 
     if (response?.payload?.success) {
+      toast.success("Course created successfully!");
       setUserInput({
         title: "",
         category: "",
@@ -72,6 +112,8 @@ function CreateCourse() {
         previewImage: ""
       });
       navigate("/courses");
+    } else {
+      toast.error("Failed to create course. Try again!");
     }
   }
 
@@ -93,7 +135,6 @@ function CreateCourse() {
             Create New Course
           </h1>
 
-          {/* FORM GRID */}
           <main className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* LEFT COLUMN */}
             <div className="flex flex-col gap-6">
@@ -104,6 +145,7 @@ function CreateCourse() {
                     <img
                       className="w-full h-40 sm:h-48 md:h-52 border object-cover"
                       src={userInput.previewImage}
+                      alt="Course Thumbnail Preview"
                     />
                   ) : (
                     <div className="w-full h-40 sm:h-48 md:h-52 flex items-center justify-center border">
@@ -125,10 +167,7 @@ function CreateCourse() {
 
               {/* Title */}
               <div className="flex flex-col gap-1">
-                <label
-                  className="text-lg font-semibold"
-                  htmlFor="title"
-                >
+                <label className="text-lg font-semibold" htmlFor="title">
                   Course Title
                 </label>
                 <input
@@ -148,10 +187,7 @@ function CreateCourse() {
             <div className="flex flex-col gap-5">
               {/* Instructor */}
               <div className="flex flex-col gap-1">
-                <label
-                  className="text-lg font-semibold"
-                  htmlFor="createdBy"
-                >
+                <label className="text-lg font-semibold" htmlFor="createdBy">
                   Course Instructor
                 </label>
                 <input
@@ -168,10 +204,7 @@ function CreateCourse() {
 
               {/* Category */}
               <div className="flex flex-col gap-1">
-                <label
-                  className="text-lg font-semibold"
-                  htmlFor="category"
-                >
+                <label className="text-lg font-semibold" htmlFor="category">
                   Course Category
                 </label>
                 <input
@@ -205,10 +238,7 @@ function CreateCourse() {
 
               {/* Description */}
               <div className="flex flex-col gap-1">
-                <label
-                  className="text-lg font-semibold"
-                  htmlFor="description"
-                >
+                <label className="text-lg font-semibold" htmlFor="description">
                   Course Description
                 </label>
                 <textarea
@@ -228,9 +258,10 @@ function CreateCourse() {
           {/* SUBMIT BUTTON */}
           <button
             type="submit"
-            className="w-full py-2 rounded-sm font-semibold text-lg cursor-pointer bg-yellow-600 hover:bg-yellow-700 transition-all ease-in-out duration-300"
+            disabled={loading}
+            className="w-full py-2 rounded-sm font-semibold text-lg cursor-pointer bg-yellow-600 hover:bg-yellow-700 transition-all ease-in-out duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Create Course
+            {loading ? "Creating..." : "Create Course"}
           </button>
         </form>
       </div>

@@ -105,10 +105,15 @@ export const createNewCourse = createAsyncThunk('/course/create',async (data) =>
         formData.append('createdBy',data?.createdBy)
         formData.append('thumbnail',data?.thumbnail)
         console.log("vggfhkthk");
-        const response = axiosInstance.post('/course/',formData,{
+        const response =await axiosInstance.post('/course/',formData,{
             withCredentials: true, // Include cookies in the request
         })
         console.log("res"+(await response).data);
+        //  toast.promise(response,{
+        //     loading:"Loading Course Data....",
+        //     success:"Courses Loaded Successfully",
+        //     error:"Failed to get the Courses"
+        // })
         toast.promise(response,{
             loading:'Creating new course',
             success:'Course Created successfully',
