@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import toast from "react-hot-toast"
 import axiosInstance from "../../Helpers/axiosInstance"
-// import { act } from "react-dom/test-utils";
-// // import { response } from "express"
 
 const initialState = {
     lectures: []
@@ -30,9 +28,6 @@ export const getAllCoursesLectures = createAsyncThunk("/courses/lecture/get", as
 export const addCourseLecture = createAsyncThunk("/courses/lecture/added", async (data) => {
     try{
         const formData=new FormData()
-        // console.log("dataaaaaaaaaaaaaa",data.lecture);
-        // console.log("dataaaaaaaaaaaaaa",data.title);
-        // console.log("dataaaaaaaaaaaaaa",data.description);
         formData.append("lecture",data.lecture)
         formData.append("title",data.title)
         formData.append("description",data.description)

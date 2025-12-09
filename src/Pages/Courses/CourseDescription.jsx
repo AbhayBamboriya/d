@@ -3,51 +3,69 @@ import { useSelector, useDispatch } from 'react-redux';
 import HomeLayout from '../../Layout/HomeLayout';
 import { deleteCourseById, getplainId } from '../../Redux/Slices/CourseSlice';
 import { useEffect, useState } from 'react';
+import { cancelCourseBundle } from '../../Redux/Slices/RazorpaySlice';
+import toast from 'react-hot-toast';
+import { getActiveUser } from '../../Redux/Slices/AuthSlice';
 
 function CourserDescription() {
     const { state } = useLocation();
     const navigate = useNavigate();
     const { role, data } = useSelector((state) => state.auth);
-
-    const activeArray = Object.values(data?.activeSubscriptions || {});
-    const isActive = activeArray.map(String).includes(String(state._id));
-
+    const [activeArray,setActiveArray]=useState([]);
+    const isActive =  activeArray.find(
+            (sub) => sub.courseId === String(state._id) && sub.status === "active"
+    );    
     const [planId, setPlanId] = useState();
     const dispatch = useDispatch();
+    
+    async function handlecancellation() {
+        await dispatch(cancelCourseBundle(isActive?.subscriptionId))
+        toast.success("Cancellation Completed")
+        navigate('/')
+    }
+
 
     async function deleteCourse(state) {
         if (!window.confirm("Are you sure you want to delete this course?")) return;
-
         const res = await dispatch(deleteCourseById(state?._id));
         if (res?.payload?.success) navigate('/courses');
     }
 
+
+
+    useEffect(() => {
+        const fetchActiveUser = async () => {
+            const res = await dispatch(getActiveUser());
+            if (res?.payload?.success) {
+                console.log('res',res.payload);
+                
+                setActiveArray(res.payload.active);
+            }
+        };
+
+    fetchActiveUser();
+}, [dispatch]);
+
     useEffect(() => {
         if (!state?._id) return;
-
-        const fetchPlan = async () => {
+        const fetchPlan = async () => {            
             const res = await dispatch(getplainId(state._id));
             if (res?.payload?.success) {
                 setPlanId(res.payload.id);
             }
         };
-
         fetchPlan();
     }, [state?._id]);
 
     return (
         <HomeLayout>
 
-            {/* MAIN WRAPPER */}
             <div className="min-h-[90vh] w-full pt-10 px-4 md:px-10 lg:px-20 flex justify-center text-white">
 
-                {/* Responsive Grid Container */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 py-10 w-full max-w-6xl">
 
-                    {/* LEFT SIDE */}
                     <div className="space-y-6">
 
-                        {/* Image */}
                         <img
                             src={state?.thumbnail?.secure_url}
                             alt="thumbnail"
@@ -56,7 +74,6 @@ function CourserDescription() {
 
                         <div className="space-y-5">
 
-                            {/* Course Info */}
                             <div className="flex flex-col items-start gap-3 text-lg md:text-xl">
                                 <p className="font-semibold">
                                     <span className="text-yellow-500 font-bold">Total Lectures: </span>
@@ -68,9 +85,9 @@ function CourserDescription() {
                                 </p>
                             </div>
 
-                            {/* Action Buttons */}
                             {role === 'ADMIN' || isActive ? (
-                                <button
+                               <div>
+                                     <button
                                     onClick={() =>
                                         navigate('/course/displaylecture', { state: { ...state } })
                                     }
@@ -78,10 +95,22 @@ function CourserDescription() {
                                 >
                                     Watch Lectures
                                 </button>
+                        <button
+                            onClick={handlecancellation}
+                            className="
+                                w-full bg-red-600 hover:bg-red-900 
+                                transition-all ease-in-out duration-300 
+                                rounded-sm font-semibold py-2 cursor-pointer text-center
+                            "
+                        >
+                            Cancel Subscription
+                        </button>
+                                </div>
+                  
                             ) : (
                                 <button
                                     onClick={() =>
-                                        navigate(`/checkout/${state?._id}`, { state: { planId: planId } })
+                                        navigate(`/checkout/${state?._id}`, { state: { planId: planId ,courseId:state._id} })
                                     }
                                     className="bg-yellow-600 text-lg md:text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-yellow-500 transition-all"
                                 >
@@ -89,7 +118,6 @@ function CourserDescription() {
                                 </button>
                             )}
 
-                            {/* Delete Button */}
                             {role === 'ADMIN' && (
                                 <button
                                     className="bg-red-600 text-lg md:text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-red-800 transition-all"
@@ -102,21 +130,17 @@ function CourserDescription() {
                         </div>
                     </div>
 
-                    {/* RIGHT SIDE */}
                     <div className="space-y-4 text-lg md:text-xl">
 
-                        {/* Course Title */}
                         <h1 className="text-2xl md:text-3xl font-bold text-yellow-500 text-center">
                             {state?.title}
                         </h1>
 
-                        {/* Course Description */}
                         <p className="text-yellow-500 font-semibold">Course Description:</p>
                         <p className="leading-relaxed text-base md:text-lg">
                             {state?.description}
                         </p>
 
-                        {/* RESPONSIVE BACK BUTTON */}
                         <div className="mt-6 lg:mt-0">
                             <button
                                 onClick={() => navigate(-1)}

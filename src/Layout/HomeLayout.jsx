@@ -7,10 +7,7 @@ import { logout } from '../Redux/Slices/AuthSlice';
 function HomeLayout({children}){
     const dispatch=useDispatch();
     const navigate=useNavigate();
-    // for checking if user is logged in or not
-    // useselector will get the deatials from authSlice.js
     const isLoggedIn=useSelector((state)=>state?.auth?.isLoggedIn)
-    // for displaying he options of user login/logout
     const role=useSelector((state)=>state?.auth?.role)
     function changeWidth(){
         const drawerSide=document.getElementsByClassName("drawer-side")

@@ -21,13 +21,11 @@ export const getCourseDetail = createAsyncThunk('/checkout/:id',async(id)=>{
 export const getAllCourses = createAsyncThunk("/course/get",async()=>{
     try{
         const response=axiosInstance.get("/course")
-        console.log("vbfck"+response);
         toast.promise(response,{
             loading:"Loading Course Data....",
             success:"Courses Loaded Successfully",
             error:"Failed to get the Courses"
         })
-        console.log("xjds"+ (await response).data.course);
         return (await response).data.course
     }
     catch(e){
@@ -37,15 +35,11 @@ export const getAllCourses = createAsyncThunk("/course/get",async()=>{
 })
 
 
-
 export const getplainId=createAsyncThunk('/plan/id',async(data)=>{
     try{
         const response=await axiosInstance.get(`/subscriptionId/plan/${data}`,{
             withCredentials: true, // Include cookies in the request
         })
-        //  const planId = response?.payload?.success;
-        // console.log("vbfck"+planId);
-        
         return (await response).data
 
     }
@@ -59,14 +53,11 @@ export const deleteCourseById=createAsyncThunk('/course/delete',async(data)=>{
         const response=axiosInstance.delete(`/course/${data}`,{
             withCredentials: true, // Include cookies in the request
         })
-        console.log("vbfck"+response);
         toast.promise(response,{
-            // alert:'vddio',
             loading:"Deleting Course ....",
             success:"Courses Deleted Successfully",
             error:"Failed to Delete the Courses"
         })
-        // console.log("xjds"+ (await response).data.course);
         return (await response).data
 
     }
@@ -82,12 +73,7 @@ const courseSlices=createSlice({
     extraReducers:(builder) => {
         builder.addCase(getAllCourses.fulfilled,(state,action) => {
             if(action.payload){
-                console.log(action.payload);
-                // here in the state the courses are loaded
                 state.courseData = [...action.payload]
-            }
-            else{
-                console.log("fggfhkd");
             }
         })
     }
@@ -95,7 +81,6 @@ const courseSlices=createSlice({
 
 export const createNewCourse = createAsyncThunk('/course/create',async (data) => {
     try{
-        console.log('check3');
         
         let formData = new FormData()
         formData.append('title',data?.title)
@@ -109,11 +94,6 @@ export const createNewCourse = createAsyncThunk('/course/create',async (data) =>
             withCredentials: true, // Include cookies in the request
         })
         console.log("res"+(await response).data);
-        //  toast.promise(response,{
-        //     loading:"Loading Course Data....",
-        //     success:"Courses Loaded Successfully",
-        //     error:"Failed to get the Courses"
-        // })
         toast.promise(response,{
             loading:'Creating new course',
             success:'Course Created successfully',

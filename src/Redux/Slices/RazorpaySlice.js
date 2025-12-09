@@ -18,7 +18,6 @@ export const getRazorPayId = createAsyncThunk('/razorpay/getId',async()=>{
         const res=await axiosInstance.get('/payments/razorpay-key',{
             withCredentials: true, // Include cookies in the request
         })
-        console.log('dssdsdsfkgjgjdjfabhay',res);
         
         return res.data
     }
@@ -32,15 +31,10 @@ export const getRazorPayId = createAsyncThunk('/razorpay/getId',async()=>{
 
 export const purchaseCourseBundle = createAsyncThunk('/purchaseCourse',async(data)=>{
     try{
-        console.log('akadjfjsh');
-        
-        console.log('course bundel',data);
-        
         const res=await axiosInstance.post('/payments/subscribe',{
             withCredentials: true, // Include cookies in the request
-            planId:data.planId
+            planId:data.planId,courseId:data.courseId
         })
-        console.log('skdsvgh',res);
         
         return res.data
     }
@@ -53,7 +47,6 @@ export const purchaseCourseBundle = createAsyncThunk('/purchaseCourse',async(dat
 
 export const verifyUserPayment = createAsyncThunk('/payment/verify',async(data)=>{
     try{
-        console.log('data from frontend',data);
         
         const res=await axiosInstance.post('/payments/verify',{
             razorpay_payment_id:data.razorpay_payment_id,
@@ -93,10 +86,12 @@ export const getPaymentRecord = createAsyncThunk('/payment/record',async()=>{
 }) 
 
 
-export const cancelCourseBundle = createAsyncThunk('/payment/cancel',async()=>{
+export const cancelCourseBundle = createAsyncThunk('/payment/cancel',async(data)=>{
     try{
         const res= axiosInstance.post('/payments/unsubscribe',{
-            withCredentials: true, // Include cookies in the request
+            withCredentials: true, // Include cookies in the request\
+            subscriptionId:data
+
         })
         toast.promise(res,{
             loading:'Unsubscribing the Course',
@@ -124,7 +119,6 @@ const razorpaySlice=createSlice({
             state.key=action?.payload?.key
         })
         .addCase(purchaseCourseBundle.fulfilled,(state,action)=>{
-            console.log('sdksdj',action?.payload);
             
             state.subscription_id=action?.payload?.subscription_id
         })

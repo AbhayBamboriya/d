@@ -26,74 +26,70 @@ function Checkout() {
     }
     const [result,setResult]=useState(null)
     const {courseId} =useParams()
+    const [loading, setLoading] = useState(false);
+
     
     async function handleSubscription(e) {
-        e.preventDefault();
-        if(!razorpayKey || !subscription_id) {
-            toast.error("Something went wrong");
+          e.preventDefault();
+
+          if (!razorpayKey || !subscription_id) {
+            toast.error("Subscription not ready. Please try again.");
             return;
+          }
+
+          // Show loading toast
+          const toastId = toast.loading("Initializing payment...");
+
+          setLoading(true);
+
+          // Razorpay options...
+          const options = {
+            key: razorpayKey,
+            subscription_id,
+            name: "Coursify Pvt. Ltd.",
+            image: "https://logopond.com/logos/4bef64fe60152798ab039d155bcc15eb.png",
+            total_count: 1,
+            method: { upi: true },
+            display_amount: result?.payload?.course?.fees,
+            display_currency: "INR",
+            theme: {
+              color: "#4F46E5", // classy purple (or your brand color)
+              backdrop_color: "#00000080", // modal background blur
+              hide_topbar: false
+            },
+
+            handler: async function (response) {
+              const paymentDetails = {
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                razorpay_subscription_id: response.razorpay_subscription_id,
+                courseId,
+              };
+
+              toast.success("Payment Successful");
+
+              const res = await dispatch(verifyUserPayment(paymentDetails));
+              navigate(res?.payload?.success ? "/checkout/success" : "/checkout/fail");
+            },
+
+            prefill: {
+              email: userData.email,
+              name: userData.fullName,
+            },
+          };
+
+          const paymentObject = new window.Razorpay(options);
+
+          setTimeout(() => {
+            setLoading(false);
+            
+            // Remove loading toast
+            toast.dismiss(toastId);
+
+            // Open Razorpay popup
+            paymentObject.open();
+          }, 3000);
         }
-       const options = {
-  key: razorpayKey,
-
-  subscription_id: subscription_id,
-  name: "Coursify Pvt. Ltd.",
-//   description: `Subscription for }`, // More meaningful
-  image: "/logo512.png", // add logo (must be https URL or public asset)
-    "total_count": 1,   // ❗ Only one payment
-  theme: {
-    color: "#4F46E5", // classy purple (or your brand color)
-    backdrop_color: "#00000080", // modal background blur
-    hide_topbar: false
-  },
-  "method": {
-    //   "netbanking": true,
-    //   "card": true,
-      "upi": true,
-    //   "wallet": true,
-    //   "emi": true
-  },
-  display_amount: result?.payload?.course?.fees , // show amount in Razorpay popup
-  display_currency: "INR",
-  handler: async function (response) {
-    paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
-    paymentDetails.razorpay_signature = response.razorpay_signature;
-    paymentDetails.razorpay_subscription_id = response.razorpay_subscription_id;
-    paymentDetails.courseId = courseId;
-
-    toast.success("Payment Successful");
-
-    const res = await dispatch(verifyUserPayment(paymentDetails));
-    res?.payload?.success ? navigate("/checkout/success") : navigate("/checkout/fail");
-  },
-
-  prefill: {
-    email: userData.email,
-    name: userData.fullName,
-  },
-
-  notes: {
-    courseId: courseId,
-    userId: userData._id,
-    purchasedOn: new Date().toLocaleString(),
-  },
-
-  modal: {
-    // UI enhancements
-    ondismiss: () => toast.info("Payment popup closed"),
-    animation: true,
-    backdropclose: false, // prevents accidental close
-  },
-
-  retry: {
-    enabled: true,
-    max_count: 3, // auto retry up to 3 times
-  },
-};
-
-        const paymentObject = new window.Razorpay(options);
-        paymentObject.open();
-    }
 
     async function load() {
           const res=await dispatch(getCourseDetail(courseId))
@@ -137,9 +133,15 @@ function Checkout() {
                             <p>100% refund on cancellation</p>
                             <p>* Terms and conditions applied *</p>
                         </div>
-                        <button type="submit" className="bg-yellow-500 hover:bg-yellow-600 transition-all ease-in-out duration-300 absolute bottom-0 w-full left-0 text-xl font-bold rounded-bl-lg rounded-br-lg py-2">
-                            Buy now
+                        <button
+                              type="submit"
+                              disabled={loading}
+                              className={`bg-yellow-500 hover:bg-yellow-600 transition-all ease-in-out duration-300 absolute bottom-0 w-full left-0 text-xl font-bold rounded-bl-lg rounded-br-lg py-2
+                                ${loading && "opacity-50 cursor-not-allowed"}`}
+                            >
+                              {loading ? "Processing..." : "Buy now"}
                         </button>
+
                     </div>
                 </div>
 

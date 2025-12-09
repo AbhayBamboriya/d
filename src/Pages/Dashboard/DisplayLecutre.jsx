@@ -29,18 +29,18 @@ function DisplayLecture() {
 
                 {/* 🔙 BACK BUTTON */}
                 <div className="flex flex-ol sm:flex-row ">
-  <button
-    onClick={() => navigate(-1)}
-    className="self-stat px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-md font-semibold mt-8 sm:mt-0"
-  >
-    ← Back
-  </button>
-</div>
+                <button
+                    onClick={() => navigate(-1)}
+                    className="self-stat px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-md font-semibold mt-8 sm:mt-0"
+                >
+                    ← Back
+                </button>
+            </div>
 
                 {/* Course Title */}
-                <div className="text-center text-2xl font-semibold text-yellow-500">
-                    Course Name : {state?.title}
-                </div>
+            <div className="text-center text-2xl font-semibold text-yellow-500">
+                Course Name : {state?.title}
+            </div>
 
                 {/* If Lectures Exist */}
                 {lectures && lectures.length > 0 ? (

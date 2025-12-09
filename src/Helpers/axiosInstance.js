@@ -8,10 +8,6 @@ const  axiosInstance=axios.create();
 const url1 = import.meta.env.URL1;
 console.log('fss',url1);
 
-
-// console.log(process.env.URL1);
-
-
 axiosInstance.defaults.baseURL=BASE_URL
 axiosInstance.defaults.withCredentials=true
 export default axiosInstance

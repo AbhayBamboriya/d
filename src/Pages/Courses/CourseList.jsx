@@ -1,19 +1,33 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCourses } from '../../Redux/Slices/CourseSlice';
 import HomeLayout from '../../Layout/HomeLayout';
 import CourseCard from '../../Component/CourseCard';
 import { useNavigate } from 'react-router-dom';
+import { getActiveUser } from '../../Redux/Slices/AuthSlice';
 
 function CourseList() {
     const dispatch = useDispatch();
     const { courseData } = useSelector((state) => state.course);
     const navigate = useNavigate();
     const { role } = useSelector((state) => state.auth);
+    const [activeSubs,setActiveArray]=useState([]);
 
     async function loadCourses() {
         await dispatch(getAllCourses());
     }
+    
+    useEffect(() => {
+        const fetchActiveUser = async () => {
+            const res = await dispatch(getActiveUser());
+            if (res?.payload?.success) {
+                console.log('res',res.payload);
+                
+                setActiveArray(res.payload.active);
+            }
+        };
+         fetchActiveUser();
+    },[]);
 
     useEffect(() => {
         loadCourses();
@@ -30,7 +44,7 @@ function CourseList() {
                 {courseData && courseData.length > 0 && (
                     <div className='mb-10 flex flex-wrap gap-14 items-center justify-center'>
                         {courseData.map((element) => (
-                            <CourseCard key={element._id} data={element} />
+                            <CourseCard key={element._id} data={element} activeSubs={activeSubs} />
                         ))}
                     </div>
                 )}

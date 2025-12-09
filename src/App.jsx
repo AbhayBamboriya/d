@@ -23,10 +23,8 @@ import Checkout from './Pages/Payment/Checkout'
 import CheckoutSuccess from './Pages/Payment/CheckoutSuccess'
 import CheckoutFailure from './Pages/Payment/CheckoutFail'
 import ChangePassword from './Pages/ChangePassword'
-// import morgan from 'morgan'
 
 function App() {
-//   const [count, setCount] = useState(0)
 
   return (
    <>
@@ -49,7 +47,6 @@ function App() {
                 <Route path='/course/addlecture' element={<Addlecture/>}></Route>
                 <Route path='/admin/dashboard' element={<AdminDashboard/>}></Route>
           </Route>
-          {/* <Route path='/course/displaylecture' element={<DisplayLecture/>}/> */}
           <Route element={<RequireAuth allowedRoles={["ADMIN","USER"]} />}>
                 <Route path='/user/profile' element={<Profile/>}/>
                 <Route path='/checkout/:courseId' element={<Checkout/>}/>

@@ -10,14 +10,7 @@ function Profile() {
     const useerData = useSelector((state) => state?.auth?.data)
     const navigate = useNavigate()
 
-    async function handlecancellation() {
-        toast('Initiating Cancellation')
-        await dispatch(cancelCourseBundle())
-        await dispatch(getUserData())
-        toast.success("Cancellation Completed")
-        navigate('/')
-    }
-
+ 
     return (
         <HomeLayout>
             <div className="min-h-[90vh] flex items-center justify-center px-4">
@@ -33,14 +26,15 @@ function Profile() {
 
                     <h3 className="text-xl font-semibold text-center capitalize">
                         {useerData?.fullName}
+                        
                     </h3>
 
                     {/* Grid responsive */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-center sm:text-left">
                         <p>Email:</p><p>{useerData?.email}</p>
                         <p>Role:</p><p>{useerData?.role}</p>
-                        <p>Subscription:</p>
-                        <p>{useerData?.role!="ADMIN" && useerData?.subscription?.status === 'active' ? 'Active' : 'Inactive'}</p>
+                        <p>{useerData.role!=="ADMIN" && 'Subscription:' }</p>
+                        <p>{useerData.role!=="ADMIN" && (useerData?.subscription?.status === 'active' ? 'Active' : 'Inactive')}</p>
                     </div>
 
                     {/* Button row responsive */}
@@ -70,18 +64,7 @@ function Profile() {
                         </Link>
                     </div>
 
-                    {useerData?.role!="ADMIN" && useerData?.subscription?.status === 'active' && (
-                        <button
-                            onClick={handlecancellation}
-                            className="
-                                w-full bg-red-600 hover:bg-red-900 
-                                transition-all ease-in-out duration-300 
-                                rounded-sm font-semibold py-2 cursor-pointer text-center
-                            "
-                        >
-                            Cancel Subscription
-                        </button>
-                    )}
+                   
                 </div>
             </div>
         </HomeLayout>

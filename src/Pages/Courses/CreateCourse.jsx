@@ -21,19 +21,16 @@ function CreateCourse() {
     fees: ""
   });
 
-  // Handle Image Upload
   function handleImage(e) {
     e.preventDefault();
     const uploadedImage = e.target.files[0];
     if (!uploadedImage) return;
 
-    // Validate file type
     if (!["image/jpeg", "image/png","image/webp"].includes(uploadedImage.type)) {
       toast.error("Only JPG/PNG files allowed");
       return;
     }
 
-    // Validate file size (< 2MB)
     if (uploadedImage.size > 2 * 1024 * 1024) {
       toast.error("Image size must be less than 2MB");
       return;
@@ -50,7 +47,6 @@ function CreateCourse() {
     });
   }
 
-  // Handle input changes
   function handleUserInput(e) {
     const { name, value } = e.target;
     setUserInput({
@@ -59,63 +55,69 @@ function CreateCourse() {
     });
   }
 
-  // Form submission
   async function onFormSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (
-      !userInput.title ||
-      !userInput.description ||
-      !userInput.category ||
-      !userInput.thumbnail ||
-      !userInput.fees ||
-      !userInput.createdBy
-    ) {
-      toast.error("All fields are mandatory");
-      return;
-    }
-
-    if(!userInput.title.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
-                toast.error('Title should be legit')
-                return
-            }
-
-
-    if (Number(userInput.fees) <= 0) {
-      toast.error("Fees must be greater than 0");
-      return;
-    }
-      if(!userInput.category.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
-                toast.error('Category should be legit')
-                return
-            }
-            
-    if(!userInput.description.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
-                toast.error('Description should be legit')
-                return
-            }
-
-
-    setLoading(true);
-    const response = await dispatch(createNewCourse(userInput));
-    setLoading(false);
-
-    if (response?.payload?.success) {
-      toast.success("Course created successfully!");
-      setUserInput({
-        title: "",
-        category: "",
-        fees: "",
-        createdBy: "",
-        description: "",
-        thumbnail: null,
-        previewImage: ""
-      });
-      navigate("/courses");
-    } else {
-      toast.error("Failed to create course. Try again!");
-    }
+  if (
+    !userInput.title ||
+    !userInput.description ||
+    !userInput.category ||
+    !userInput.thumbnail ||
+    !userInput.fees ||
+    !userInput.createdBy
+  ) {
+    toast.error("All fields are mandatory");
+    return;
   }
+
+  if(!userInput.title.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
+    toast.error('Title should be legit');
+    return;
+  }
+
+  if (Number(userInput.fees) <= 0) {
+    toast.error("Fees must be greater than 0");
+    return;
+  }
+
+  if(!userInput.category.match(/^[A-Za-z]+(?: [A-Za-z]+)*$/)){
+    toast.error('Category should be legit');
+    return;
+  }
+
+  // -------------------------
+  // ✅ Show loading toast
+  // -------------------------
+  const toastId = toast.loading("Creating course...");
+
+  setLoading(true);
+
+  const response = await dispatch(createNewCourse(userInput));
+
+  setLoading(false);
+
+  // -------------------------
+  // ❌ Remove loading toast
+  // -------------------------
+  toast.dismiss(toastId);
+
+  if (response?.payload?.success) {
+    toast.success("Course created successfully!");
+    setUserInput({
+      title: "",
+      category: "",
+      fees: "",
+      createdBy: "",
+      description: "",
+      thumbnail: null,
+      previewImage: ""
+    });
+    navigate("/courses");
+  } else {
+    toast.error("Failed to create course. Try again!");
+  }
+}
+
 
   return (
     <HomeLayout>
@@ -136,9 +138,7 @@ function CreateCourse() {
           </h1>
 
           <main className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* LEFT COLUMN */}
             <div className="flex flex-col gap-6">
-              {/* Thumbnail */}
               <div>
                 <label htmlFor="image_uploads" className="cursor-pointer">
                   {userInput?.previewImage ? (
@@ -165,7 +165,6 @@ function CreateCourse() {
                 />
               </div>
 
-              {/* Title */}
               <div className="flex flex-col gap-1">
                 <label className="text-lg font-semibold" htmlFor="title">
                   Course Title
@@ -183,9 +182,7 @@ function CreateCourse() {
               </div>
             </div>
 
-            {/* RIGHT COLUMN */}
             <div className="flex flex-col gap-5">
-              {/* Instructor */}
               <div className="flex flex-col gap-1">
                 <label className="text-lg font-semibold" htmlFor="createdBy">
                   Course Instructor
@@ -202,7 +199,6 @@ function CreateCourse() {
                 />
               </div>
 
-              {/* Category */}
               <div className="flex flex-col gap-1">
                 <label className="text-lg font-semibold" htmlFor="category">
                   Course Category
@@ -219,7 +215,6 @@ function CreateCourse() {
                 />
               </div>
 
-              {/* Fees */}
               <div className="flex flex-col gap-1">
                 <label className="text-lg font-semibold" htmlFor="fees">
                   Amount
@@ -236,7 +231,6 @@ function CreateCourse() {
                 />
               </div>
 
-              {/* Description */}
               <div className="flex flex-col gap-1">
                 <label className="text-lg font-semibold" htmlFor="description">
                   Course Description
@@ -255,7 +249,6 @@ function CreateCourse() {
             </div>
           </main>
 
-          {/* SUBMIT BUTTON */}
           <button
             type="submit"
             disabled={loading}

@@ -1,19 +1,13 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-function CourseCard({ data }) {
+function CourseCard({ data,activeSubs }) {
     const navigate = useNavigate();
-
-    // Always run hooks at the top
-    const activeSubs = useSelector((state) => state?.auth?.data?.activeSubscriptions);
-
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    
-    // Safe enrollment logic
-    const isEnrolled = isLoggedIn 
-        ? activeSubs?.includes(String(data?._id)) 
-        : false;
-
+     const sub = activeSubs.find((s) => s.courseId === data._id);
+     const courseStatus = sub?.status;
+     const end=sub?.end;
+     const isExpired=Date.now()>end && courseStatus === "active";
     return (
         <div
             onClick={() => navigate('/course/description/', { state: { ...data } })}
@@ -49,17 +43,34 @@ function CourseCard({ data }) {
                     {data?.createdBy}
                 </p>
 
-                {isLoggedIn && (
-                    !isEnrolled ? (
-                        <span className='absolute mt-10 my-10 bg-red-500 text-xs px-2 py-2 rounded'>
-                            Not Enrolled
+                {isLoggedIn && (() => {
+                    // find subscription for this course
+                    const sub = activeSubs?.find(s => s.courseId === data._id);
+
+                    let courseStatus = "inactive";
+                    if (sub?.status === "active") courseStatus = "active";
+                    else if (sub?.status === "cancelled") courseStatus = "cancelled";
+
+                    const badgeStyle =
+                        courseStatus === "active"
+                            ? "bg-green-500"
+                            : courseStatus === "cancelled"
+                                ?  "bg-red-500" : isExpired ? "bg-orange-500"
+                                : "bg-yellow-500";
+
+                    return (
+                        <span className={`absolute mt-10 my-10 ${badgeStyle} text-xs px-2 py-2 rounded`}>
+                            {courseStatus === "active"
+                                ? "Active"
+                                : courseStatus === "cancelled"
+                                    ? "Cancelled"
+                                    : isExpired
+    
+?"Expired":"Inactive"}
                         </span>
-                    ) : (
-                        <span className='absolute mt-10 my-10 bg-green-500 text-xs px-2 py-2 rounded'>
-                            Enrolled
-                        </span>
-                    )
-                )}
+                    );
+                })()}
+
             </div>
         </div>
     );

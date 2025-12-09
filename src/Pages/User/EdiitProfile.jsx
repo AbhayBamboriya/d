@@ -44,7 +44,6 @@ function EditProfile(){
 
     async function onFormsubmit(e){
         e.preventDefault()
-        console.log(data);
         if(!data.avatar && !data.fullName){
             toast.error('Name or Profile is mandatory')
             return
@@ -60,17 +59,12 @@ function EditProfile(){
         const formData=new FormData()
         formData.append('fullName', data.fullName)
         formData.append('avatar',data.avatar)
-        // console.log(formData.entries().next())
-        // console.log(formData.entries().next())
-        // api request
+        
         await dispatch(updateProfile([data.userId,formData]))
-        console.log("dispatch",data);
         await dispatch(getUserData())
-        console.log("user",data);
         navigate('/user/profile')
 
     }
-    // console.log("ddd"+data.fullName);
     return(
         <HomeLayout>
             <div className='flex items-center justify-center h-[100vh]'>

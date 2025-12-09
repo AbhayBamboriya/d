@@ -1,4 +1,3 @@
-// import { descriptors } from "chart.js/dist/core/core.defaults"
 
 function CarouselSlide({name,title,discription,slideNumber,totalSlide,image}){
     return(

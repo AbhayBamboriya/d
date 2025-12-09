@@ -6,12 +6,10 @@ function Footer() {
 
   return (
     <footer className="relative left-0 bottom-0 w-full bg-gray-800 text-white py-5 px-5 sm:px-20 flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-20">
-      {/* Copyright */}
       <section className="text-center sm:text-left text-lg ext-red-500">
         © {year} | All rights reserved
       </section>
 
-      {/* Social Icons */}
       <section className="flex items-center justify-center gap-5 text-2xl">
         <a
           href="https://www.facebook.com/"

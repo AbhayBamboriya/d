@@ -1,27 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import  axiosInstance  from "../../Helpers/axiosInstance";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import changePasswordInstance from "../../Helpers/changePasswordInstance";
-import { act } from "react";
-// import { build } from "vite";    
-// authSlice is for authenticatino purpose
 
 
-// initial state of auth slice
 const initialState={
     isLoggedIn:'',
     role:localStorage.getItem('role') || ""
 }  
-// thunk is used to provide the delay
-// string is passed in createAsyncThunk to uniquely identify
+
 export const createAccount=createAsyncThunk('/auth/signup',async(data) =>{
     try{
         const res=axiosInstance.post("/user/register",data)
-        console.log('res'+res);
         toast.promise(res
-            // ,console.log('ressss'+res).toString()
             ,{
             loading:"Wait! Creating your account",
             
@@ -29,13 +19,8 @@ export const createAccount=createAsyncThunk('/auth/signup',async(data) =>{
                 return data?.data?.message
             },
             error:"Failed to create account"
-            // error: (err) => {
-            //     console.error('Failed to create account:', err);
-            //     return "Failed to create account";
-            // }
-            // console.log();
+            
         });
-        // console.log('check');
         return (await res).data
     }
     catch(e){
@@ -46,10 +31,7 @@ export const createAccount=createAsyncThunk('/auth/signup',async(data) =>{
 
 export const found=createAsyncThunk('/found',async(data)=>{
     try{
-        console.log('dataaa',data);
-        console.log('reached here');
         const res=axiosInstance.post('/user/check',data)
-        
         toast.promise(res,
             {
                 loading:'Wait! Authentication in Progress ',
@@ -60,7 +42,6 @@ export const found=createAsyncThunk('/found',async(data)=>{
             }
         )
         return (await (res)).data
-        // console.log('cheeckkkk');
     }
     catch(e){
         toast.error(e?.response?.data?.message)
@@ -93,23 +74,13 @@ export const login=createAsyncThunk('/auth/login',async(data) =>{
     try{
         console.log('login data',data);
         const res=axiosInstance.post("/user/login",data)
-        // console.log('res'+(await res).data);
-        toast.promise(res
-            // ,console.log('ressss'+res).toString()
-            ,{
+        toast.promise(res,{
             loading:"Wait! Authentication in Progress ",
-            
             success:(data)=>{
                 return data?.data?.message
             },
             error:"Failed to Login"
-            // error: (err) => {
-            //     console.error('Failed to create account:', err);
-            //     return "Failed to create account";
-            // }
-            // console.log();
         });
-        // console.log('check');
         return (await res).data
     }
     catch(e){
@@ -125,7 +96,6 @@ export const changePassword=createAsyncThunk('/auth/changePassword',async(data) 
         const res=axiosInstance.post("/user/changePassword",data)
        
         toast.promise(res
-            // ,console.log('ressss'+res).toString()
             ,{
             loading:"Password Change is in Progress",
             
@@ -143,11 +113,23 @@ export const changePassword=createAsyncThunk('/auth/changePassword',async(data) 
         throw e;
     }
 })
+export const getActiveUser=createAsyncThunk('/plan/id',async(data)=>{
+    try{
+        const response=await axiosInstance.get('/user/activeSubscription',{
+            withCredentials: true, 
+        })   
+        return (await response).data
+
+    }
+    catch(e){
+        toast.error(error?.response?.data?.message)
+        throw e;
+    }
+})
 
 export const logout = createAsyncThunk("/auth/logout",async ()=>{
     try{
         const res=axiosInstance.get("/user/logout")
-        console.log('res'+(await res).data);
         toast.promise(res,{
             loading:"Wait! Logout in Progress ",
             
@@ -156,7 +138,6 @@ export const logout = createAsyncThunk("/auth/logout",async ()=>{
             },
             error:"Failed to Logout"
         });
-        // console.log('check');
         return (await res).data
     }
     catch(e){
@@ -176,7 +157,6 @@ export const updateProfile = createAsyncThunk("/user/update/profile",async (data
             },
             error:"Failed to Update Profile"
         });
-        // console.log('check');
         return (await res).data
     }
     catch(e){
@@ -188,8 +168,6 @@ export const updateProfile = createAsyncThunk("/user/update/profile",async (data
 export const getUserData = createAsyncThunk("/user/details",async ()=>{
     try{
         const res=axiosInstance.get("/user/me")
-        
-        // console.log('check');
         return (await res).data
     }
     catch(e){
@@ -200,24 +178,11 @@ export const getUserData = createAsyncThunk("/user/details",async ()=>{
 
 export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
     try{
-        console.log('reached1');
-        console.log(data);
-
-        console.log('abhay');
-        // const res=axiosInstance.changeUrl.post(`/${url}`,data)
-        // const res=changePasswordInstance.post(`/${url}`,data)
-        console.log('resetPasswordData',data);
-        console.log('passwordSend',data.passwordW);
-        // l=data.passwordW
-        console.log('sending data',`/user/password/${data.url}`,data);
         const res=await axiosInstance.post(`/user/password/${data.url}`,data)
-
-        console.log('reached from reset123445',res);
+        
         toast.promise(res,{
             loading:"Wait! Reset Password in Progress ",
-            
             success:(data)=>{
-                console.log('data from slics',data);
                 return data?.data?.message
             },
             error:"Failed to Reset Password"
@@ -225,7 +190,6 @@ export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
         return (await res).data
     }
     catch(e){
-        // console.log('error');
             toast.error(e?.response?.data?.message)
             throw e;
     }
@@ -278,5 +242,4 @@ const authSlice=createSlice({
     }
 })
 
-// export const {}=authSlice.actions
 export default authSlice.reducer
