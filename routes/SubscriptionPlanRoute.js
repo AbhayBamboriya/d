@@ -5,7 +5,6 @@ import AppError from "../utils/error.util.js";
 
 const router = express.Router();
 
-// kfggf
 router.get(
   "/plan/:courseId",
   async (req, res, next) => {
