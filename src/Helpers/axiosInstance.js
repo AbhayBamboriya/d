@@ -1,7 +1,7 @@
 
 import axios from "axios";
-// const BASE_URL="https://lms-server-10l8.onrender.com/api/v1"
-const BASE_URL="http://localhost:4050/api/v1"
+const BASE_URL="https://lms-server-10l8.onrender.com/api/v1"
+// const BASE_URL="http://localhost:4050/api/v1"
 // const BASE_URL="https://lms-server-kc50bkrc3-abhays-projects-efa9d066.vercel.app/"
 
 const  axiosInstance=axios.create(); 

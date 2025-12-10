@@ -144,7 +144,7 @@ function AdminDashboard() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full">
-              <div className="flex items-center justify-between p-5 gap-5 rounded-md shadow-md">
+              {/* <div className="flex items-center justify-between p-5 gap-5 rounded-md shadow-md">
                 <div className="flex flex-col items-center">
                   <p className="font-semibold">Subscription Count</p>
                   <h3 className="text-3xl md:text-4xl font-bold">
@@ -162,7 +162,7 @@ function AdminDashboard() {
                   </h3>
                 </div>
                 <GiMoneyStack className="text-green-500 text-5xl" />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
