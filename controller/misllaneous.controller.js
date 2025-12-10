@@ -72,10 +72,19 @@ export const userStats = (async (req, res, next) => {
   try{
       const allUsersCount = await User.countDocuments();
 
-      const subscribedUsersCount = await User.countDocuments({
-        'subscription.status': 'active', // subscription.status means we are going inside an object and we have to put this in quotes
-      });
+      const result = await User.aggregate([
+        { $unwind: "$activeSubscriptions" },
+        { $match: { "activeSubscriptions.status": "active" } },
+        { $count: "count" }
+      ]);
 
+      const subscribedUsersCount = result[0]?.count || 0;
+
+      console.log("Total active subscriptions:", subscribedUsersCount);
+
+
+      // console.log(subscribedUsersCount.count,'fdfj');
+      
       res.status(200).json({
         success: true,
         message: 'All registered users count',
