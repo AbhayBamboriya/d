@@ -86,26 +86,29 @@ function CourserDescription() {
                             </div>
 
                             {role === 'ADMIN' || isActive ? (
-                               <div>
-                                     <button
-                                    onClick={() =>
-                                        navigate('/course/displaylecture', { state: { ...state } })
-                                    }
-                                    className="bg-yellow-600 text-lg md:text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-yellow-500 transition-all"
-                                >
-                                    Watch Lectures
-                                </button>
-                        <button
-                            onClick={handlecancellation}
-                            className="
-                                w-full bg-red-600 hover:bg-red-900 
-                                transition-all ease-in-out duration-300 
-                                rounded-sm font-semibold py-2 cursor-pointer text-center
-                            "
-                        >
-                            Cancel Subscription
-                        </button>
-                                </div>
+                               <div className="bg-blck flex flex-col gap-4">
+                                        <button
+                                            onClick={() =>
+                                                navigate('/course/displaylecture', { state: { ...state } })
+                                            }
+                                            className="bg-yellow-600 text-lg md:text-xl rounded-md font-bold px-5 py-3 w-full hover:bg-yellow-500 transition-all"
+                                        >
+                                            Watch Lectures
+                                        </button>
+
+                                        {role !== 'ADMIN' && (
+                                            <button
+                                                onClick={handlecancellation}
+                                                className="
+                                                    bg-red-600 hover:bg-red-900
+                                                    text-lg md:text-xl rounded-md font-bold px-5 py-3 w-full transition-all
+                                                "
+                                            >
+                                                Cancel Subscription
+                                            </button>
+                                        )}
+                                    </div>
+
                   
                             ) : (
                                 <button

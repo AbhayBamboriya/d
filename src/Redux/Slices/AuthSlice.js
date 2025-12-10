@@ -56,9 +56,6 @@ export const forgot=createAsyncThunk('/forgot',async(data)=>{
         toast.promise(res,
             {
                 loading:'Wait! Authentication in Progress ',
-                success:(res)=>{
-                    return "Enter Password"
-                },
                 error:'Enter a registered User Id'
             }
         )
